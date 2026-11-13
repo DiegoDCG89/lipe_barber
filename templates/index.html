@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ shop.name }}</title>
+<meta name="description" content="{{ shop.tagline }}">
+<link rel="canonical" href="{{ base }}/">
+<meta name="theme-color" content="#090706">
+<meta property="og:type" content="website"><meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="{{ shop.name }}"><meta property="og:description" content="{{ shop.tagline }}"><meta property="og:url" content="{{ base }}/">
+{% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
+<meta name="twitter:card" content="{{ 'summary_large_image' if og_image else 'summary' }}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%88%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">{{ jsonld|safe }}</script>
+
+<!-- Tipografia: Cormorant Garamond (títulos) + Manrope (texto) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='noir.css') }}?v=1">
+<style>
+  section[id] { scroll-margin-top: 4.5rem; }
+  .member .photo { position: relative; overflow: hidden; }
+  .member .photo img.b-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+  .member:hover .photo img.b-img { transform: scale(1.04); }
+  .member .role { color: var(--gold, #d7a85b); font-size: .78rem; text-transform: uppercase; letter-spacing: .18em; margin-top: .2rem; }
+  .member .bio { color: var(--mute, #938b7f); font-size: .9rem; line-height: 1.5; margin: .55rem 0 .75rem; }
+  .member .b-actions { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-top: .5rem; }
+</style>
+<noscript><style>.fade-up { opacity: 1; transform: none; }</style></noscript>
+</head>
+<body>
+
+<!-- BARRA SUPERIOR -->
+<header class="nav">
+  <div class="nav-in">
+    <a href="#" class="logo" aria-label="{{ shop.name }}">{% include '_logo.html' %}</a>
+
+    <nav class="nav-links" aria-label="Seções">
+      <a href="#servicos">Serviços</a>
+      <a href="#equipe">Equipe</a>
+      <a id="nav-produtos" href="#produtos" class="hidden">Produtos</a>
+      {% if gallery %}<a href="#galeria">Galeria</a>{% endif %}
+      <a href="#local">Contato</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a id="nav-conta" href="/entrar" class="tiny">Entrar</a>
+      <button type="button" data-open-booking class="btn btn-line btn-sm">Agendar agora</button>
+    </div>
+
+    <button type="button" id="mobile-btn" class="burger" aria-label="Abrir menu">
+      <svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16"></path></svg>
+    </button>
+  </div>
+</header>
+
+<!-- MENU MOBILE -->
+<div id="mobile-menu" class="mmenu">
+  <a href="#" class="mobile-link">Início</a>
+  <a href="#servicos" class="mobile-link">Serviços</a>
+  <a href="#equipe" class="mobile-link">Equipe</a>
+  <a id="nav-produtos-m" href="#produtos" class="mobile-link hidden">Produtos</a>
+  {% if gallery %}<a href="#galeria" class="mobile-link">Galeria</a>{% endif %}
+  <a href="#local" class="mobile-link">Contato</a>
+  <button type="button" data-open-booking class="mobile-link btn btn-gold">Agendar agora</button>
+  <a id="nav-conta-m" href="/entrar" class="mobile-link small">Entrar</a>
+</div>
+
+<main>
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg" role="img" aria-label="Interior da barbearia"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-in">
+    <span class="kicker">Estilo urbano &middot; Tradição &amp; modernidade</span>
+    {% set _p = (shop.name or 'Barbearia').split(' ', 1) %}
+    <h1>{% if _p|length > 1 %}{{ _p[0] }}<br><span class="text-gold-gradient italic">{{ _p[1] }}</span>{% else %}<span class="text-gold-gradient italic">{{ _p[0] }}</span>{% endif %}</h1>
+    <p class="lead">Seu estilo, nossa essência. Tradição da navalha clássica com a precisão contemporânea, no coração da sua cidade.</p>
+    <button type="button" data-open-booking class="btn btn-gold">Agende sua visita</button>
+  </div>
+</header>
+
+<!-- FAIXA -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee">
+    {% for _ in range(2) %}{% for w in ['Corte', '✦', 'Barba', '✦', 'Navalha', '✦', 'Estilo', '✦', 'Tradição', '✦', 'Essência', '✦'] %}<span>{{ w }}</span>{% endfor %}{% endfor %}
+  </div>
+</div>
+
+<!-- SERVIÇOS -->
+<section id="servicos" class="section section-alt">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">O menu</span><h2>Serviços</h2></div>
+    <div id="services" class="menu"></div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section id="equipe" class="section">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">Os mestres</span><h2>Nossa equipe</h2></div>
+    <div id="barbers" class="team n3"></div>
+  </div>
+</section>
+
+<!-- PRODUTOS (aparece só se houver produtos à venda) -->
+<section id="produtos" class="section section-alt hidden">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">Leve para casa</span><h2>Cuidados em casa</h2></div>
+    <div id="products" class="pgrid"></div>
+  </div>
+</section>
+
+{% if gallery %}
+<!-- GALERIA -->
+<section id="galeria" class="section">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">Nosso espaço</span><h2>Galeria</h2></div>
+    <div class="gallery">
+      {% for p in gallery %}
+      <figure>
+        <img src="/media/gallery/{{ p.filename }}" alt="{{ p.caption or shop.name }}" loading="lazy" decoding="async">
+        {% if p.caption %}<figcaption>{{ p.caption }}</figcaption>{% endif %}
+      </figure>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- LOCALIZAÇÃO -->
+<section id="local" class="section section-alt">
+  <div class="wrap local fade-up">
+    <div>
+      <div class="sec-title"><span class="kicker">Visite-nos</span><h2>Onde estamos</h2></div>
+      <p class="addr" id="address-text">{{ shop.address }}</p>
+      <ul class="hours">
+        {% for h in hours %}
+        <li><span>{{ h.label }}</span> <span class="val{{ ' closed' if h.closed }}">{{ h.value }}</span></li>
+        {% else %}
+        <li><span>Consulte-nos</span></li>
+        {% endfor %}
+      </ul>
+      <a id="gps" target="_blank" rel="noopener" class="btn btn-gold">&#10148; Traçar rota no GPS</a>
+    </div>
+    <div class="map">
+      <div class="ph">Carregando mapa…</div>
+      <iframe id="mapa-google" title="Mapa da barbearia" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+</main>
+
+{% if shop.wa_link %}
+<a href="{{ shop.wa_link }}?text={{ ('Olá! Gostaria de falar com a ' ~ shop.name ~ '.')|urlencode }}" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp" class="wa">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  WhatsApp
+</a>
+{% endif %}
+
+<!-- RODAPÉ -->
+<footer class="footer">
+  <a href="#" class="logo" aria-label="{{ shop.name }}">{% include '_logo.html' %}</a>
+  <nav aria-label="Rodapé">
+    <a href="#servicos">Serviços</a>
+    <a href="#equipe">Profissionais</a>
+    {% if gallery %}<a href="#galeria">Galeria</a>{% endif %}
+    <a href="/privacidade">Política de Privacidade</a>
+    {% if shop.instagram_url %}<a href="{{ shop.instagram_url }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+    <a href="/admin">Área do Barbeiro</a>
+  </nav>
+  <p>&copy; {{ year }} {{ shop.name }}. Todos os direitos reservados.</p>
+</footer>
+
+<!-- MODAL DE AGENDAMENTO -->
+<dialog id="dlg" class="sheet">
+  <div>
+    <form id="form" class="sheet-body">
+      <div class="sheet-head">
+        <h3>Agendar horário</h3>
+        <button type="button" id="close" aria-label="Fechar" class="x">&times;</button>
+      </div>
+
+      <div class="cols2">
+        <div class="field">
+          <label for="fb" class="lbl">Profissional</label>
+          <select id="fb" required autofocus class="inp"></select>
+        </div>
+        <div class="field">
+          <label for="fs" class="lbl">Serviço</label>
+          <select id="fs" required class="inp"></select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fd" class="lbl">Data</label>
+        <input id="fd" type="date" required class="inp">
+      </div>
+
+      <div class="field">
+        <span class="lbl">Horários disponíveis</span>
+        <div id="slots" class="slots" role="radiogroup"></div>
+      </div>
+
+      <div class="who">
+        <span class="lbl">Agendando como</span>
+        <p class="nm"><span id="who-name"></span></p>
+        <p><span id="who-phone"></span> &middot; <a href="/minha-conta" class="link">Meus dados</a> &middot; <a href="/logout" class="link">Não é você? Sair</a></p>
+      </div>
+      <input id="fw" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <p id="err" class="err" role="alert" style="margin-top:1rem"></p>
+
+      <button type="submit" class="btn btn-gold btn-block">Confirmar agendamento</button>
+    </form>
+
+    <div id="done" class="done hidden">
+      <div class="ring">
+        <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
+      </div>
+      <h3>Agendado com sucesso!</h3>
+      <p class="muted" style="font-size:.9rem">Você receberá a confirmação e os lembretes no seu WhatsApp.</p>
+      <div id="managebox" class="box hidden">
+        <b>Precisa desmarcar ou remarcar?</b>
+        <p class="muted" style="margin-bottom:.5rem">Use o seu link pessoal (também vai na mensagem do WhatsApp):</p>
+        <a id="manage" class="link" style="word-break:break-all"></a>
+      </div>
+      <div class="actions" style="padding-top:1rem">
+        <a id="gcal" target="_blank" rel="noopener" class="btn btn-gold btn-block btn-sm">Adicionar ao calendário</a>
+        <a id="falar" target="_blank" rel="noopener" class="btn btn-line btn-block btn-sm hidden">Falar com o barbeiro no WhatsApp</a>
+        <a href="/minha-conta" class="btn btn-line btn-block btn-sm">Ver meus agendamentos</a>
+        <button id="skip" type="button" class="btn btn-line btn-block btn-sm">Fechar janela</button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const $ = s => document.querySelector(s);
+
+    // --- LÓGICA DE ANIMAÇÕES DE SCROLL ---
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+    }
+
+    // --- MENU MOBILE ---
+    const btnMenu = $('#mobile-btn'), menuDiv = $('#mobile-menu');
+    let menuOpen = false;
+    const setMenu = open => {
+      menuOpen = open;
+      if (open) {
+        menuDiv.classList.add('show');
+        setTimeout(() => menuDiv.classList.add('on'), 10);
+      } else {
+        menuDiv.classList.remove('on');
+        setTimeout(() => menuDiv.classList.remove('show'), 300);
+      }
+    };
+    btnMenu.addEventListener('click', () => setMenu(!menuOpen));
+    document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => setMenu(false)));
+
+    // --- CONFIGURAÇÃO DO MAPA ---
+    try {
+        const q = encodeURIComponent({{ shop.address|tojson }});
+        const mapEl = $('#mapa-google');
+        if (mapEl) mapEl.src = "https://maps.google.com/maps?q=" + q + "&t=m&z=15&output=embed&iwloc=near";
+        const gpsEl = $('#gps');
+        if (gpsEl) gpsEl.href = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "https://maps.apple.com/?daddr=" + q + "&dirflg=d" : "https://www.google.com/maps/dir/?api=1&destination=" + q + "&travelmode=driving";
+    } catch(e) { console.error(e); }
+
+    // --- SESSÃO (conta do cliente) ---
+    let ME = null;
+    const meP = fetch('/api/me').then(r => r.json()).then(j => { ME = j.user; atualizarConta(); return ME; }).catch(() => null);
+    function atualizarConta() {
+        ['#nav-conta', '#nav-conta-m'].forEach(sel => { const a = $(sel); if (!a) return; a.href = ME ? '/minha-conta' : '/entrar'; a.textContent = ME ? 'Minha conta' : 'Entrar'; });
+        if (ME) { $('#who-name').textContent = ME.nome; $('#who-phone').textContent = ME.telefone; }
+    }
+    const irParaLogin = (sv, barb) => {
+        const params = new URLSearchParams({agendar: sv || '1'});
+        if (barb) params.set('barber', barb);
+        location.href = '/entrar?next=' + encodeURIComponent('/?' + params.toString());
+    };
+
+    // --- CARREGAMENTO DE DADOS ---
+    const brl = v => Number(v).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const SHOP_NAME = {{ shop.name|tojson }};
+    let BARBERS = [];
+    const wa = (tel, texto) => `https://wa.me/55${tel}?text=${encodeURIComponent(texto)}`;
+    const publicP = fetch('/api/public').then(r => r.json()).then(d => {
+        BARBERS = d.barbers;
+
+        // Serviços (lista em formato de cardápio)
+        $('#services').innerHTML = d.services.map(s => `
+            <div class="svc">
+                <div class="svc-top">
+                    <h3>${esc(s.name)}</h3>
+                    <span class="leader"></span>
+                    <span class="price">${brl(s.price)}</span>
+                </div>
+                <p class="desc">${esc(s.description||'')} <span class="time">${s.minutes} min</span></p>
+                <button type="button" data-open-booking data-service="${s.id}" class="link-btn">Agendar</button>
+            </div>`).join('');
+
+        // Equipe
+        const n = d.barbers.length, k = Math.min(n, 4);
+        if (!n) $('#equipe').classList.add('hidden');
+        $('#barbers').className = `team n${k || 3}`;
+        $('#barbers').innerHTML = d.barbers.map((b, i) => {
+            const fotoUrl = b.photo || b.foto || '';
+            const descTxt = b.description || b.descricao || '';
+            const ini = esc(b.name.split(' ').map(x=>x[0]).slice(0,2).join(''));
+            return `
+            <article class="member">
+                <div class="photo">
+                    <span class="num">0${i + 1}</span>
+                    ${fotoUrl
+                      ? `<img src="${esc(fotoUrl)}" alt="${esc(b.name)}" class="b-img" loading="lazy" decoding="async" onerror="this.remove()">`
+                      : `<span class="mono" aria-hidden="true">${ini}</span>`}
+                </div>
+                <h3>${esc(b.name)}</h3>
+                <p class="role">${esc(b.role||'Especialista')}</p>
+                ${descTxt ? `<p class="bio">${esc(descTxt)}</p>` : ''}
+                <div class="b-actions">
+                    <button type="button" data-open-booking data-barber="${esc(b.id)}" class="link-btn">Agendar com ${esc(b.name.split(' ')[0])}</button>
+                    ${b.whatsapp ? `<a class="link-btn contact" target="_blank" rel="noopener" href="${wa(b.whatsapp, 'Olá, ' + b.name.split(' ')[0] + '! Vi o seu contato no site da ' + SHOP_NAME + '.')}">WhatsApp</a>` : ''}
+                </div>
+            </article>`;
+        }).join('');
+
+        // Produtos (seção só aparece se houver produtos)
+        if (d.products.length) {
+            $('#produtos').classList.remove('hidden');
+            ['#nav-produtos', '#nav-produtos-m'].forEach(s => $(s).classList.remove('hidden'));
+            $('#products').innerHTML = d.products.map((p, i) => `
+                <div class="prod">
+                    <span class="n">${String(i + 1).padStart(2, '0')}</span>
+                    <div>
+                        <p class="type"><span class="dot ${p.stock>0?'':'off'}"></span>${p.stock>0?'Disponível':'Esgotado'}</p>
+                        <h3>${esc(p.name)}</h3>
+                        <p class="pp">${brl(p.price)}</p>
+                    </div>
+                </div>`).join('');
+        }
+
+        $('#fb').innerHTML = '<option value="" disabled selected>ESCOLHER...</option>' + d.barbers.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('');
+        $('#fs').innerHTML = '<option value="" disabled selected>ESCOLHER...</option>' + d.services.map(s => `<option value="${s.id}">${esc(s.name)} – ${brl(s.price)} (${s.minutes} min)</option>`).join('');
+    }).catch(e => console.error(e));
+
+    // --- MODAL & FORMULÁRIO ---
+    const modal = $('#dlg'), form = $('#form'), divDone = $('#done'), inputData = $('#fd'), boxSlots = $('#slots');
+    let chosenTime = null, openedAt = Date.now();
+
+    async function abrirModal(servico, barbeiro) {
+        await publicP;  // os serviços precisam estar na lista antes de escolher um
+        form.classList.remove('hidden'); divDone.classList.add('hidden'); $('#managebox').classList.add('hidden');
+        const t = new Date(); inputData.min = inputData.value = t.toLocaleDateString('en-CA');
+        if (servico) $('#fs').value = servico;  // "Agendar" no cartão já escolhe o serviço
+        if (barbeiro) $('#fb').value = barbeiro;
+        openedAt = Date.now();
+        modal.showModal();
+        loadSlots();
+    }
+
+    document.body.addEventListener('click', async e => {
+        const opener = e.target.closest('[data-open-booking]');
+        if (!opener) return;
+        if (!(await meP)) return irParaLogin(opener.dataset.service, opener.dataset.barber);  // agendar exige conta
+        abrirModal(opener.dataset.service, opener.dataset.barber);
+    });
+
+    // voltou do login com ?agendar=... -> abre o agendamento
+    const params = new URLSearchParams(location.search);
+    const pedido = params.get('agendar'), pedidoBarb = params.get('barber');
+    if (pedido) {
+        history.replaceState(null, '', location.pathname);
+        meP.then(me => me ? abrirModal(pedido === '1' ? '' : pedido, pedidoBarb || '') : irParaLogin(pedido === '1' ? '' : pedido, pedidoBarb || ''));
+    }
+
+    const fecharModal = () => { modal.close(); form.reset(); boxSlots.innerHTML = ''; chosenTime = null; };
+    $('#close').addEventListener('click', fecharModal);
+    $('#skip').addEventListener('click', fecharModal);
+
+    async function loadSlots() {
+        chosenTime = null; boxSlots.innerHTML = '';
+        const fb = $('#fb').value, fs = $('#fs').value, fd = $('#fd').value;
+        if (!fd || !fb || !fs) return;
+        boxSlots.innerHTML = '<p class="slots-msg">Procurando...</p>';
+        try {
+            const r = await fetch(`/api/slots?barber=${fb}&service=${fs}&date=${fd}`);
+            const list = await r.json();
+            if (!r.ok || !Array.isArray(list)) throw new Error('slots');
+            boxSlots.innerHTML = list.length ? list.map(t => `<button type="button" data-time="${t}" class="slot">${t}</button>`).join('') : '<p class="slots-msg gold">Esgotado.</p>';
+        } catch(e) { boxSlots.innerHTML = '<p class="slots-msg bad">Erro de rede.</p>'; }
+    }
+
+    ['fb','fs','fd'].forEach(id => $('#' + id).addEventListener('change', loadSlots));
+
+    boxSlots.addEventListener('click', e => {
+        const b = e.target.closest('button[data-time]'); if (!b) return;
+        chosenTime = b.dataset.time;
+        document.querySelectorAll('#slots button').forEach(x => x.classList.toggle('on', x === b));
+    });
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault(); const err = $('#err'); err.textContent = '';
+        if (!chosenTime) { err.textContent = 'SELECIONE UM HORÁRIO.'; return; }
+        const btn = e.target.querySelector('button[type="submit"]'); const txt = btn.textContent;
+        btn.textContent = 'PROCESSANDO...'; btn.disabled = true;
+        try {
+            const r = await fetch('/api/appointments', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ barber: $('#fb').value, service: $('#fs').value, date: $('#fd').value, time: chosenTime,
+                                       website: $('#fw').value, elapsed: Date.now() - openedAt })
+            });
+            const j = await r.json();
+            if (r.status === 401) { irParaLogin(); return; }
+            if (!r.ok) { err.textContent = (j.error || 'Erro').toUpperCase(); loadSlots(); }
+            else {
+                $('#gcal').href = j.google_link;
+                if (j.manage_url) { $('#manage').href = j.manage_url; $('#manage').textContent = j.manage_url; $('#managebox').classList.remove('hidden'); }
+                const bar = BARBERS.find(x => x.id === $('#fb').value), serv = $('#fs').selectedOptions[0].textContent.split(' – ')[0];
+                const link = $('#falar');
+                if (bar && bar.whatsapp) {
+                    const dia = $('#fd').value.split('-').reverse().slice(0, 2).join('/');
+                    link.href = wa(bar.whatsapp, `Olá, ${bar.name.split(' ')[0]}! Sou ${ME ? ME.nome : ''} e acabei de agendar ${serv} para ${dia} às ${chosenTime}.`);
+                    link.textContent = `Falar com ${bar.name.split(' ')[0]} no WhatsApp`; link.classList.remove('hidden');
+                } else { link.classList.add('hidden'); }
+                form.classList.add('hidden'); divDone.classList.remove('hidden');
+            }
+        } catch(e) { err.textContent = "FALHA DE COMUNICAÇÃO."; }
+        btn.textContent = txt; btn.disabled = false;
+    });
+});
+</script>
+</body>
+</html>

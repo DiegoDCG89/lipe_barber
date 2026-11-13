@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#090706">
+<title>Meu agendamento – {{ shop.name }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='noir.css') }}?v=1">
+</head>
+<body>
+<header class="nav">
+  <div class="nav-in">
+    <a href="/" class="logo" aria-label="{{ shop.name }}">{% include '_logo.html' %}</a>
+    <div class="nav-right"><a href="/">Voltar ao site</a></div>
+  </div>
+</header>
+
+<main class="page">
+  <span class="kicker">Meu agendamento</span>
+  <h1>Seu horário</h1>
+  <p class="sub">Veja os detalhes, remarque ou cancele.</p>
+  <div id="state" class="panel muted">Carregando…</div>
+</main>
+
+<script>
+const T = {{ token|tojson }};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const WD = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+const when = s => { const [d, t] = s.split(' '); const x = new Date(d + 'T12:00:00'); return `${WD[x.getDay()]}, ${d.split('-').reverse().slice(0, 2).join('/')} às ${t}`; };
+const ymd = d => d.toLocaleDateString('en-CA');
+const show = html => { $('#state').className = 'panel stack'; $('#state').innerHTML = html; };
+async function call(path, body) {
+  const r = await fetch('/api/manage/' + T + path, body === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+  return {ok: r.ok, status: r.status, j: await r.json().catch(() => ({}))};
+}
+
+let info = null, chosen = null;
+async function load() {
+  const r = await call('');
+  if (!r.ok) { show(`<div class="alert bad">${esc(r.j.error || 'Não foi possível abrir este agendamento.')}</div><a href="/" class="btn btn-line btn-block btn-sm">Ir para o site</a>`); return; }
+  info = r.j; render();
+}
+function render(msg) {
+  const i = info, active = i.status === 'agendado';
+  let h = msg ? `<div class="alert ok">${esc(msg)}</div>` : '';
+  h += `<div class="stack" style="margin-top:0">
+      <p class="kicker" style="letter-spacing:.3em">Olá, ${esc(i.client)}</p>
+      <p class="display" style="font-size:2.1rem;line-height:1.1">${esc(i.service)} <span class="muted">com</span> ${esc(i.barber)}</p>
+      <p style="${active ? 'color:var(--primary);font-weight:700' : 'color:var(--muted-fg);text-decoration:line-through'}">${esc(when(i.start_at))}</p>
+      <p class="muted" style="font-size:.85rem">${esc(i.address)}</p>
+      ${i.status === 'cancelado' ? '<p><span class="pill bad">Cancelado</span></p>' : ''}
+    </div>`;
+  if (i.barber_whatsapp) {
+    const txt = `Olá, ${i.barber.split(' ')[0]}! Sou ${i.client}, tenho horário de ${i.service} em ${when(i.start_at)}.`;
+    h += `<a class="btn btn-line btn-block btn-sm" target="_blank" rel="noopener" href="https://wa.me/55${esc(i.barber_whatsapp)}?text=${encodeURIComponent(txt)}">Falar com ${esc(i.barber.split(' ')[0])} no WhatsApp</a>`;
+  }
+  if (i.can_change) {
+    h += `<div class="stack" style="border-top:1px solid var(--border);padding-top:1.25rem">
+        <button id="bres" class="btn btn-gold btn-block">Remarcar horário</button>
+        <button id="bcan" class="btn btn-danger btn-block">Cancelar agendamento</button>
+        <p class="muted" style="font-size:.75rem;text-align:center">Alterações são possíveis até ${i.deadline_hours}h antes do horário. Você ainda pode remarcar ${i.reschedules_left} vez(es).</p>
+      </div>
+      <div id="resched" class="hidden stack" style="border-top:1px solid var(--border);padding-top:1.25rem">
+        <label class="lbl" for="nd">Nova data</label>
+        <input id="nd" type="date" class="inp">
+        <div id="slots" class="slots"></div>
+        <p id="smsg" class="muted" style="font-size:.85rem"></p>
+        <button id="bok" disabled class="btn btn-gold btn-block">Confirmar novo horário</button>
+      </div>`;
+  } else {
+    h += `<div class="alert warn">${esc(i.reason)}</div>`;
+  }
+  if (i.has_phone) h += i.optout ? '<p class="muted" style="font-size:.75rem;text-align:center">Você não recebe mais mensagens automáticas da barbearia.</p>'
+    : '<p style="text-align:center"><button id="bopt" class="link-btn" style="letter-spacing:.15em;text-transform:none;font-weight:500;font-size:.75rem;color:var(--muted-fg);text-decoration:underline">Parar de receber mensagens automáticas</button></p>';
+  h += '<p style="text-align:center;font-size:.75rem" class="muted"><a href="/" class="link">Voltar ao site</a> &nbsp;&middot;&nbsp; <a href="/privacidade" class="link" style="color:var(--muted-fg)">Política de Privacidade</a></p>';
+  show(h);
+  if (i.can_change) wire();
+  const bo = $('#bopt');
+  if (bo) bo.onclick = async () => {
+    if (!confirm('Você deixará de receber confirmações e lembretes por WhatsApp. Continuar?')) return;
+    const r = await call('/optout', {});
+    if (!r.ok) { alert(r.j.error || 'Não foi possível concluir.'); return; }
+    info.optout = true; render('Pronto! Você não receberá mais mensagens automáticas.');
+  };
+}
+function wire() {
+  const nd = $('#nd'), today = new Date(), max = new Date(Date.now() + info.max_days * 864e5);
+  nd.min = ymd(today); nd.max = ymd(max);
+  $('#bres').onclick = () => { $('#resched').classList.toggle('hidden'); };
+  $('#bcan').onclick = async () => {
+    if (!confirm('Tem certeza que deseja cancelar este agendamento?')) return;
+    const r = await call('/cancel', {});
+    if (!r.ok) { alert(r.j.error || 'Não foi possível cancelar.'); load(); return; }
+    info.status = 'cancelado'; info.can_change = false; info.reason = 'Seu agendamento foi cancelado. Quando quiser, agende um novo horário pelo nosso site.';
+    render('Agendamento cancelado.');
+  };
+  nd.onchange = async () => {
+    chosen = null; $('#bok').disabled = true; $('#slots').innerHTML = ''; $('#smsg').textContent = 'Buscando horários…';
+    const r = await call('/slots?date=' + nd.value);
+    if (!r.ok) { $('#smsg').textContent = r.j.error || 'Erro ao buscar horários.'; return; }
+    $('#smsg').textContent = r.j.length ? 'Escolha um horário:' : 'Sem horários livres nesse dia. Tente outra data.';
+    $('#slots').innerHTML = r.j.map(t => `<button type="button" data-t="${t}" class="slot">${t}</button>`).join('');
+  };
+  $('#slots').onclick = e => {
+    const b = e.target.closest('button[data-t]'); if (!b) return;
+    chosen = b.dataset.t; $('#bok').disabled = false;
+    document.querySelectorAll('#slots button').forEach(x => x.classList.toggle('on', x === b));
+  };
+  $('#bok').onclick = async () => {
+    if (!chosen) return; $('#bok').disabled = true;
+    const r = await call('/reschedule', {date: nd.value, time: chosen});
+    if (!r.ok) { alert(r.j.error || 'Não foi possível remarcar.'); nd.onchange(); return; }
+    await load(); render('Horário remarcado! Você receberá uma nova confirmação no WhatsApp.');
+  };
+}
+load();
+</script>
+</body>
+</html>

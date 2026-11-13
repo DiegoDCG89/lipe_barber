@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#090706">
+<title>Minha conta · {{ shop.name }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='noir.css') }}?v=1">
+<style>
+.item { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+.item .d { min-width: 5.5rem; }
+.item .d b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 2rem; line-height: 1; color: var(--primary); }
+.item .d span { font-size: .7rem; text-transform: capitalize; letter-spacing: .12em; color: var(--muted-fg); }
+.item .i { flex: 1; min-width: 10rem; }
+.item .i small { color: var(--muted-fg); font-size: .8rem; }
+.item .pill { margin-left: .5rem; }
+.vazio { padding: 2.5rem 1rem; text-align: center; color: var(--muted-fg); border: 1px dashed var(--border); }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-in">
+    <a class="logo" href="/" aria-label="{{ shop.name }}">{% include '_logo.html' %}</a>
+    <div class="nav-right">
+      <a href="/">Site</a>
+      <a id="painel" href="/admin" hidden>Painel</a>
+      <a href="/logout">Sair</a>
+    </div>
+  </div>
+</header>
+
+<main class="page wide">
+  <span class="kicker">Área do cliente</span>
+  <h1 id="ola">Minha conta</h1>
+  <p class="sub">Seus horários e seu histórico na {{ shop.name }}.</p>
+  <a class="btn btn-gold" href="/?agendar=1">Agendar novo horário</a>
+
+  <div class="tabs line" role="tablist" style="margin-top:2.5rem">
+    <button type="button" role="tab" id="tb-prox" aria-selected="true">Próximos</button>
+    <button type="button" role="tab" id="tb-hist" aria-selected="false">Histórico</button>
+  </div>
+  <div id="lista" aria-live="polite"><p class="vazio">Carregando…</p></div>
+
+  <div class="sec-title" style="margin:4rem 0 1.5rem"><span class="kicker">Perfil</span><h2 class="display" style="font-size:2.5rem;line-height:1">Meus dados</h2></div>
+  <form class="panel" id="f-perfil" novalidate>
+    <div class="field"><label class="lbl" for="pn">Nome</label><input class="inp" id="pn" maxlength="80" autocomplete="name" required></div>
+    <div class="field"><label class="lbl" for="pt">WhatsApp (com DDD)</label><input class="inp" id="pt" type="tel" inputmode="tel" autocomplete="tel" required></div>
+    <div class="field"><label class="lbl" for="pe">E-mail (opcional)</label><input class="inp" id="pe" type="email" maxlength="120" autocomplete="email"></div>
+    <p class="msg" id="m-perfil" role="status"></p>
+    <button class="btn btn-gold" type="submit">Salvar dados</button>
+  </form>
+
+  <div class="sec-title" style="margin:4rem 0 1.5rem"><span class="kicker">Segurança</span><h2 class="display" style="font-size:2.5rem;line-height:1">Trocar senha</h2></div>
+  <form class="panel" id="f-senha" novalidate>
+    <div class="field"><label class="lbl" for="sa">Senha atual</label><input class="inp" id="sa" type="password" autocomplete="current-password" maxlength="128" required></div>
+    <div class="field"><label class="lbl" for="sn">Nova senha</label><input class="inp" id="sn" type="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+      <p class="hint">Mínimo de 8 caracteres. Ao trocar, os outros aparelhos conectados saem da conta.</p></div>
+    <p class="msg" id="m-senha" role="status"></p>
+    <button class="btn btn-line" type="submit">Trocar senha</button>
+  </form>
+</main>
+{% raw %}
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const brl = n => Number(n || 0).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+let DADOS = {proximos: [], historico: []}, ABA = 'prox', EU = '';
+
+async function api(url, body) {
+  const r = await fetch(url, body === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+  if (r.status === 401) { location.href = '/entrar?next=/minha-conta'; throw new Error('Sessão expirada'); }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(j.error || 'Erro inesperado.');
+  return j;
+}
+function msg(id, texto, ok) { const m = $(id); m.textContent = texto; m.className = 'msg ' + (ok ? 'o' : 'e'); }
+
+const ROTULO = {agendado: ['Agendado', ''], concluido: ['Realizado', 'ok'], faltou: ['Faltou', 'bad']};
+function card(a) {
+  const dt = new Date(a.data + 'T12:00:00');
+  const [txt, cl] = a.futuro ? ['Agendado', ''] : (ROTULO[a.status] && a.status !== 'agendado' ? ROTULO[a.status] : ['Passado', '']);
+  return `<div class="item"><div class="d"><b>${esc(a.hora)}</b><span>${esc(dt.toLocaleDateString('pt-BR', {weekday: 'short', day: '2-digit', month: '2-digit'}))}</span></div>
+    <div class="i">${esc(a.servico)} <span class="pill ${cl}">${txt}</span><br><small>com ${esc(a.barbeiro)} · ${brl(a.preco)}</small></div>
+    ${a.futuro ? `<div class="row" style="display:flex;gap:.5rem;flex-wrap:wrap">
+      ${a.barbeiro_whatsapp ? `<a class="btn btn-line btn-sm" target="_blank" rel="noopener" href="https://wa.me/55${esc(a.barbeiro_whatsapp)}?text=${encodeURIComponent('Olá, ' + a.barbeiro.split(' ')[0] + '! Sou ' + EU + ', tenho horário de ' + a.servico + ' em ' + dt.toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'}) + ' às ' + a.hora + '.')}">Falar com ${esc(a.barbeiro.split(' ')[0])}</a>` : ''}
+      <a class="btn btn-line btn-sm" href="${esc(a.link)}">${a.pode_alterar ? 'Remarcar / cancelar' : 'Detalhes'}</a></div>` : ''}</div>`;
+}
+function render() {
+  const l = ABA === 'prox' ? DADOS.proximos : DADOS.historico;
+  $('#lista').innerHTML = l.length ? l.map(card).join('') :
+    `<p class="vazio">${ABA === 'prox' ? 'Você não tem horários marcados.' : 'Seu histórico aparece aqui depois do primeiro atendimento.'}</p>`;
+  $('#tb-prox').setAttribute('aria-selected', String(ABA === 'prox')); $('#tb-hist').setAttribute('aria-selected', String(ABA !== 'prox'));
+}
+$('#tb-prox').onclick = () => { ABA = 'prox'; render(); };
+$('#tb-hist').onclick = () => { ABA = 'hist'; render(); };
+
+async function iniciar() {
+  const me = (await api('/api/me')).user;
+  if (!me) { location.href = '/entrar?next=/minha-conta'; return; }
+  EU = me.nome; $('#ola').textContent = 'Olá, ' + me.nome.split(' ')[0];
+  $('#pn').value = me.nome; $('#pt').value = me.telefone; $('#pe').value = me.email;
+  if (me.papel === 'barbeiro') $('#painel').hidden = false;
+  try { DADOS = await api('/api/conta/agendamentos'); render(); }
+  catch (e) { $('#lista').innerHTML = `<p class="vazio">${esc(e.message)}</p>`; }
+}
+
+$('#f-perfil').onsubmit = async e => {
+  e.preventDefault(); msg('#m-perfil', '', true);
+  try {
+    const j = await api('/api/conta/perfil', {nome: $('#pn').value, telefone: $('#pt').value, email: $('#pe').value});
+    $('#pt').value = j.user.telefone; $('#ola').textContent = 'Olá, ' + j.user.nome.split(' ')[0]; msg('#m-perfil', 'Dados salvos.', true);
+  } catch (err) { msg('#m-perfil', err.message, false); }
+};
+$('#f-senha').onsubmit = async e => {
+  e.preventDefault(); msg('#m-senha', '', true);
+  try {
+    await api('/api/conta/senha', {atual: $('#sa').value, nova: $('#sn').value});
+    $('#sa').value = $('#sn').value = ''; msg('#m-senha', 'Senha alterada.', true);
+  } catch (err) { msg('#m-senha', err.message, false); }
+};
+iniciar();
+</script>
+{% endraw %}
+</body>
+</html>
