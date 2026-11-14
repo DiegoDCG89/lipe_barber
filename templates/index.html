@@ -6,7 +6,7 @@
 <title>{{ shop.name }}</title>
 <meta name="description" content="{{ shop.tagline }}">
 <link rel="canonical" href="{{ base }}/">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#090706">
 <meta property="og:type" content="website"><meta property="og:locale" content="pt_BR">
 <meta property="og:title" content="{{ shop.name }}"><meta property="og:description" content="{{ shop.tagline }}"><meta property="og:url" content="{{ base }}/">
 {% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
@@ -14,151 +14,115 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%88%3C/text%3E%3C/svg%3E">
 <script type="application/ld+json">{{ jsonld|safe }}</script>
 
-<!-- Mantendo as fontes originais -->
+<!-- Tipografia: Cormorant Garamond (títulos) + Manrope (texto) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
-<!-- Tailwind via CDN para prototipagem rápida (depois pode buildar pelo v3) -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          brand: { 500: '#ff8c00', 600: '#e07b00' }, // Laranja inspirado no logo
-          dark: { 900: '#0a0a0a', 800: '#111111', 700: '#1a1a1a' } // Fundo escuro do logo
-        },
-        fontFamily: {
-          display: ['"Cormorant Garamond"', 'serif'],
-          sans: ['Manrope', 'sans-serif']
-        }
-      }
-    }
-  }
-</script>
 <link rel="stylesheet" href="{{ url_for('static', filename='noir.css') }}?v=1">
 <style>
-  /* Mantendo estilos críticos e overrides do Tailwind para evitar quebra do form */
   section[id] { scroll-margin-top: 4.5rem; }
-  body { @apply bg-dark-900 text-gray-200 font-sans; }
-  h1, h2, h3, .display-font { @apply font-display; }
+  .member .photo { position: relative; overflow: hidden; }
+  .member .photo img.b-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s ease; }
+  .member:hover .photo img.b-img { transform: scale(1.04); }
+  .member .role { color: var(--gold, #d7a85b); font-size: .78rem; text-transform: uppercase; letter-spacing: .18em; margin-top: .2rem; }
+  .member .bio { color: var(--mute, #938b7f); font-size: .9rem; line-height: 1.5; margin: .55rem 0 .75rem; }
+  .member .b-actions { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-top: .5rem; }
 </style>
 <noscript><style>.fade-up { opacity: 1; transform: none; }</style></noscript>
 </head>
-<body class="bg-dark-900 text-gray-200 overflow-x-hidden antialiased">
+<body>
 
 <!-- BARRA SUPERIOR -->
-<header class="fixed top-0 inset-x-0 z-50 bg-dark-900/90 backdrop-blur-md border-b border-dark-700">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-    <a href="#" class="text-2xl font-display tracking-wide text-white uppercase" aria-label="{{ shop.name }}">
-      <!-- O _logo.html deve injetar algo que se beneficie de text-brand-500 se necessário -->
-      {% include '_logo.html' %}
-    </a>
+<header class="nav">
+  <div class="nav-in">
+    <a href="#" class="logo" aria-label="{{ shop.name }}">{% include '_logo.html' %}</a>
 
-    <nav class="hidden md:flex gap-8 text-xs font-bold tracking-[0.25em] uppercase text-gray-400" aria-label="Seções">
-      <a href="#servicos" class="hover:text-brand-500 transition-colors duration-300">Serviços</a>
-      <a href="#equipe" class="hover:text-brand-500 transition-colors duration-300">Equipe</a>
-      <a id="nav-produtos" href="#produtos" class="hover:text-brand-500 transition-colors duration-300 hidden">Produtos</a>
-      {% if gallery %}<a href="#galeria" class="hover:text-brand-500 transition-colors duration-300">Galeria</a>{% endif %}
-      <a href="#local" class="hover:text-brand-500 transition-colors duration-300">Contato</a>
+    <nav class="nav-links" aria-label="Seções">
+      <a href="#servicos">Serviços</a>
+      <a href="#equipe">Equipe</a>
+      <a id="nav-produtos" href="#produtos" class="hidden">Produtos</a>
+      {% if gallery %}<a href="#galeria">Galeria</a>{% endif %}
+      <a href="#local">Contato</a>
     </nav>
 
-    <div class="hidden md:flex items-center gap-6">
-      <a id="nav-conta" href="/entrar" class="text-[0.7rem] font-bold tracking-[0.25em] uppercase text-gray-400 hover:text-brand-500 transition-colors">Entrar</a>
-      <button type="button" data-open-booking class="border border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-dark-900 font-bold text-xs uppercase tracking-widest px-5 py-2.5 transition-all duration-300">Agendar agora</button>
+    <div class="nav-cta">
+      <a id="nav-conta" href="/entrar" class="tiny">Entrar</a>
+      <button type="button" data-open-booking class="btn btn-line btn-sm">Agendar agora</button>
     </div>
 
-    <button type="button" id="mobile-btn" class="md:hidden text-gray-200 hover:text-brand-500" aria-label="Abrir menu">
-      <svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16"></path></svg>
+    <button type="button" id="mobile-btn" class="burger" aria-label="Abrir menu">
+      <svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16"></path></svg>
     </button>
   </div>
 </header>
 
 <!-- MENU MOBILE -->
-<div id="mobile-menu" class="fixed inset-0 z-40 hidden flex-col items-center justify-center gap-8 bg-dark-900/95 backdrop-blur-lg opacity-0 transition-opacity duration-300">
-  <a href="#" class="mobile-link font-display text-4xl text-white hover:text-brand-500 transition-colors">Início</a>
-  <a href="#servicos" class="mobile-link font-display text-4xl text-white hover:text-brand-500 transition-colors">Serviços</a>
-  <a href="#equipe" class="mobile-link font-display text-4xl text-white hover:text-brand-500 transition-colors">Equipe</a>
-  <a id="nav-produtos-m" href="#produtos" class="mobile-link font-display text-4xl text-white hover:text-brand-500 transition-colors hidden">Produtos</a>
-  {% if gallery %}<a href="#galeria" class="mobile-link font-display text-4xl text-white hover:text-brand-500 transition-colors">Galeria</a>{% endif %}
-  <a href="#local" class="mobile-link font-display text-4xl text-white hover:text-brand-500 transition-colors">Contato</a>
-  <button type="button" data-open-booking class="mobile-link bg-brand-500 text-dark-900 font-bold text-sm uppercase tracking-[0.3em] px-8 py-4 w-64 mt-4 hover:bg-brand-600 transition-colors">Agendar agora</button>
-  <a id="nav-conta-m" href="/entrar" class="mobile-link font-bold text-xs uppercase tracking-[0.3em] text-brand-500 hover:underline">Entrar</a>
+<div id="mobile-menu" class="mmenu">
+  <a href="#" class="mobile-link">Início</a>
+  <a href="#servicos" class="mobile-link">Serviços</a>
+  <a href="#equipe" class="mobile-link">Equipe</a>
+  <a id="nav-produtos-m" href="#produtos" class="mobile-link hidden">Produtos</a>
+  {% if gallery %}<a href="#galeria" class="mobile-link">Galeria</a>{% endif %}
+  <a href="#local" class="mobile-link">Contato</a>
+  <button type="button" data-open-booking class="mobile-link btn btn-gold">Agendar agora</button>
+  <a id="nav-conta-m" href="/entrar" class="mobile-link small">Entrar</a>
 </div>
 
 <main>
 <!-- HERO -->
-<header class="relative min-h-screen flex items-end overflow-hidden pt-32 pb-24 px-6">
-  <!-- O hero original usa uma imagem. Vamos escurecer a base para dar destaque ao logo/texto -->
-  <div class="absolute inset-0 -z-20 bg-dark-900 bg-[url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?q=80&w=2074&auto=format&fit=crop')] bg-cover bg-center grayscale brightness-[0.4] mix-blend-overlay"></div>
-  <div class="absolute inset-0 -z-10 bg-gradient-to-t from-dark-900 via-dark-900/80 to-transparent"></div>
-  
-  <div class="max-w-7xl mx-auto w-full">
-    <span class="block text-xs font-bold text-brand-500 uppercase tracking-[0.4em] mb-6">Barbearia dos Cortes</span>
+<header class="hero">
+  <div class="hero-bg" role="img" aria-label="Interior da barbearia"></div>
+  <div class="hero-fade"></div>
+  <div class="hero-in">
+    <span class="kicker">Estilo urbano &middot; Tradição &amp; modernidade</span>
     {% set _p = (shop.name or 'Barbearia').split(' ', 1) %}
-    <h1 class="font-display font-light text-6xl md:text-8xl lg:text-[9rem] leading-none text-white tracking-tight mb-8">
-      {% if _p|length > 1 %}{{ _p[0] }}<br><span class="text-brand-500 italic">{{ _p[1] }}</span>{% else %}<span class="text-brand-500 italic">{{ _p[0] }}</span>{% endif %}
-    </h1>
-    <p class="text-lg md:text-xl text-gray-400 max-w-xl font-light mb-10 leading-relaxed">Seu estilo, nossa essência. Tradição da navalha clássica com a precisão contemporânea, no coração da sua cidade.</p>
-    <button type="button" data-open-booking class="bg-brand-500 text-dark-900 font-bold text-sm uppercase tracking-[0.3em] px-10 py-5 hover:bg-brand-600 transition-all duration-300 inline-block">Agende sua visita</button>
+    <h1>{% if _p|length > 1 %}{{ _p[0] }}<br><span class="text-gold-gradient italic">{{ _p[1] }}</span>{% else %}<span class="text-gold-gradient italic">{{ _p[0] }}</span>{% endif %}</h1>
+    <p class="lead">Seu estilo, nossa essência. Tradição da navalha clássica com a precisão contemporânea, no coração da sua cidade.</p>
+    <button type="button" data-open-booking class="btn btn-gold">Agende sua visita</button>
   </div>
 </header>
 
 <!-- FAIXA -->
-<div class="border-y border-dark-700 py-6 overflow-hidden bg-dark-800" aria-hidden="true">
-  <div class="flex w-max gap-12 whitespace-nowrap font-display italic font-light text-3xl text-dark-700 animate-[marquee_30s_linear_infinite]">
-    {% for _ in range(2) %}{% for w in ['Corte', '✦', 'Barba', '✦', 'Navalha', '✦', 'Estilo', '✦', 'Tradição', '✦', 'Essência', '✦'] %}<span class="text-gray-500">{{ w }}</span>{% endfor %}{% endfor %}
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee">
+    {% for _ in range(2) %}{% for w in ['Corte', '✦', 'Barba', '✦', 'Navalha', '✦', 'Estilo', '✦', 'Tradição', '✦', 'Essência', '✦'] %}<span>{{ w }}</span>{% endfor %}{% endfor %}
   </div>
 </div>
 
 <!-- SERVIÇOS -->
-<section id="servicos" class="py-32 bg-dark-800">
-  <div class="max-w-7xl mx-auto px-6 fade-up">
-    <div class="mb-16 flex flex-col gap-3">
-      <span class="text-xs font-bold text-brand-500 uppercase tracking-[0.4em]">O menu</span>
-      <h2 class="font-display font-light text-5xl md:text-6xl text-white">Serviços</h2>
-    </div>
-    <!-- Injetado via JS -->
-    <div id="services" class="grid md:grid-cols-2 gap-x-16 gap-y-0"></div>
+<section id="servicos" class="section section-alt">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">O menu</span><h2>Serviços</h2></div>
+    <div id="services" class="menu"></div>
   </div>
 </section>
 
 <!-- EQUIPE -->
-<section id="equipe" class="py-32 bg-dark-900">
-  <div class="max-w-7xl mx-auto px-6 fade-up">
-    <div class="mb-16 flex flex-col gap-3">
-      <span class="text-xs font-bold text-brand-500 uppercase tracking-[0.4em]">Os mestres</span>
-      <h2 class="font-display font-light text-5xl md:text-6xl text-white">Nossa equipe</h2>
-    </div>
-    <!-- Injetado via JS. A classe 'team' original ainda se aplica. -->
-    <div id="barbers" class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-10"></div>
+<section id="equipe" class="section">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">Os mestres</span><h2>Nossa equipe</h2></div>
+    <div id="barbers" class="team n3"></div>
   </div>
 </section>
 
-<!-- PRODUTOS -->
-<section id="produtos" class="py-32 bg-dark-800 hidden">
-  <div class="max-w-7xl mx-auto px-6 fade-up">
-    <div class="mb-16 flex flex-col gap-3">
-      <span class="text-xs font-bold text-brand-500 uppercase tracking-[0.4em]">Leve para casa</span>
-      <h2 class="font-display font-light text-5xl md:text-6xl text-white">Cuidados em casa</h2>
-    </div>
-    <div id="products" class="grid grid-cols-2 md:grid-cols-4 border-t border-l border-dark-700"></div>
+<!-- PRODUTOS (aparece só se houver produtos à venda) -->
+<section id="produtos" class="section section-alt hidden">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">Leve para casa</span><h2>Cuidados em casa</h2></div>
+    <div id="products" class="pgrid"></div>
   </div>
 </section>
 
 {% if gallery %}
 <!-- GALERIA -->
-<section id="galeria" class="py-32 bg-dark-900">
-  <div class="max-w-7xl mx-auto px-6 fade-up">
-    <div class="mb-16 flex flex-col gap-3">
-      <span class="text-xs font-bold text-brand-500 uppercase tracking-[0.4em]">Nosso espaço</span>
-      <h2 class="font-display font-light text-5xl md:text-6xl text-white">Galeria</h2>
-    </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-[1px] bg-dark-700 border border-dark-700">
+<section id="galeria" class="section">
+  <div class="wrap fade-up">
+    <div class="sec-title"><span class="kicker">Nosso espaço</span><h2>Galeria</h2></div>
+    <div class="gallery">
       {% for p in gallery %}
-      <figure class="relative m-0 aspect-square overflow-hidden bg-dark-800 group">
-        <img src="/media/gallery/{{ p.filename }}" alt="{{ p.caption or shop.name }}" loading="lazy" decoding="async" class="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105">
-        {% if p.caption %}<figcaption class="absolute inset-x-0 bottom-0 pt-8 pb-3 px-3 text-center text-[0.65rem] uppercase tracking-[0.25em] text-white bg-gradient-to-t from-dark-900 to-transparent">{{ p.caption }}</figcaption>{% endif %}
+      <figure>
+        <img src="/media/gallery/{{ p.filename }}" alt="{{ p.caption or shop.name }}" loading="lazy" decoding="async">
+        {% if p.caption %}<figcaption>{{ p.caption }}</figcaption>{% endif %}
       </figure>
       {% endfor %}
     </div>
@@ -167,59 +131,50 @@
 {% endif %}
 
 <!-- LOCALIZAÇÃO -->
-<section id="local" class="py-32 bg-dark-800">
-  <div class="max-w-7xl mx-auto px-6 fade-up grid lg:grid-cols-[1fr_1.5fr] gap-12 lg:gap-24">
+<section id="local" class="section section-alt">
+  <div class="wrap local fade-up">
     <div>
-      <div class="mb-10 flex flex-col gap-3">
-        <span class="text-xs font-bold text-brand-500 uppercase tracking-[0.4em]">Visite-nos</span>
-        <h2 class="font-display font-light text-5xl md:text-6xl text-white">Onde estamos</h2>
-      </div>
-      <p class="text-lg text-gray-300 mb-8" id="address-text">{{ shop.address }}</p>
-      <ul class="space-y-3 text-gray-400 mb-12">
+      <div class="sec-title"><span class="kicker">Visite-nos</span><h2>Onde estamos</h2></div>
+      <p class="addr" id="address-text">{{ shop.address }}</p>
+      <ul class="hours">
         {% for h in hours %}
-        <li class="flex justify-between items-center border-b border-dark-700 pb-2">
-          <span>{{ h.label }}</span> 
-          <span class="text-white font-medium {{ 'text-brand-500' if h.closed }}">{{ h.value }}</span>
-        </li>
+        <li><span>{{ h.label }}</span> <span class="val{{ ' closed' if h.closed }}">{{ h.value }}</span></li>
         {% else %}
         <li><span>Consulte-nos</span></li>
         {% endfor %}
       </ul>
-      <a id="gps" target="_blank" rel="noopener" class="bg-brand-500 text-dark-900 font-bold text-xs uppercase tracking-[0.3em] px-8 py-4 hover:bg-brand-600 transition-colors inline-flex items-center gap-3">
-        <span>&#10148;</span> Traçar rota no GPS
-      </a>
+      <a id="gps" target="_blank" rel="noopener" class="btn btn-gold">&#10148; Traçar rota no GPS</a>
     </div>
-    <div class="relative min-h-[400px] border border-dark-700 bg-dark-900 overflow-hidden">
-      <div class="absolute inset-0 flex items-center justify-center text-xs uppercase tracking-[0.3em] text-gray-600">Carregando mapa…</div>
-      <!-- Filtro escurecido para o mapa combinar com o tema noir -->
-      <iframe id="mapa-google" title="Mapa da barbearia" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="absolute inset-0 w-full h-full border-0 filter grayscale invert-[0.92] hue-rotate-180"></iframe>
+    <div class="map">
+      <div class="ph">Carregando mapa…</div>
+      <iframe id="mapa-google" title="Mapa da barbearia" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 </section>
 </main>
 
 {% if shop.wa_link %}
-<a href="{{ shop.wa_link }}?text={{ ('Olá! Gostaria de falar com a ' ~ shop.name ~ '.')|urlencode }}" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp" class="fixed right-5 bottom-5 z-40 flex items-center gap-2 bg-[#1f9d55] text-white px-5 py-3 font-bold text-xs uppercase tracking-[0.2em] shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:bg-[#178a49] hover:-translate-y-1 transition-all duration-300">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+<a href="{{ shop.wa_link }}?text={{ ('Olá! Gostaria de falar com a ' ~ shop.name ~ '.')|urlencode }}" target="_blank" rel="noopener" aria-label="Falar pelo WhatsApp" class="wa">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
   WhatsApp
 </a>
 {% endif %}
 
 <!-- RODAPÉ -->
-<footer class="border-t border-dark-700 py-16 px-6 text-center text-xs uppercase tracking-[0.3em] text-gray-500 bg-dark-900">
-  <a href="#" class="inline-block text-3xl font-display text-white mb-8 normal-case tracking-normal" aria-label="{{ shop.name }}">{% include '_logo.html' %}</a>
-  <nav class="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-10" aria-label="Rodapé">
-    <a href="#servicos" class="hover:text-brand-500 transition-colors">Serviços</a>
-    <a href="#equipe" class="hover:text-brand-500 transition-colors">Profissionais</a>
-    {% if gallery %}<a href="#galeria" class="hover:text-brand-500 transition-colors">Galeria</a>{% endif %}
-    <a href="/privacidade" class="hover:text-brand-500 transition-colors">Política de Privacidade</a>
-    {% if shop.instagram_url %}<a href="{{ shop.instagram_url }}" target="_blank" rel="noopener" class="hover:text-brand-500 transition-colors">Instagram</a>{% endif %}
-    <a href="/admin" class="hover:text-brand-500 transition-colors">Área do Barbeiro</a>
+<footer class="footer">
+  <a href="#" class="logo" aria-label="{{ shop.name }}">{% include '_logo.html' %}</a>
+  <nav aria-label="Rodapé">
+    <a href="#servicos">Serviços</a>
+    <a href="#equipe">Profissionais</a>
+    {% if gallery %}<a href="#galeria">Galeria</a>{% endif %}
+    <a href="/privacidade">Política de Privacidade</a>
+    {% if shop.instagram_url %}<a href="{{ shop.instagram_url }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
+    <a href="/admin">Área do Barbeiro</a>
   </nav>
   <p>&copy; {{ year }} {{ shop.name }}. Todos os direitos reservados.</p>
 </footer>
 
-<!-- MODAL DE AGENDAMENTO (Mantendo a estrutura do Noir.css para não quebrar a lógica) -->
+<!-- MODAL DE AGENDAMENTO -->
 <dialog id="dlg" class="sheet">
   <div>
     <form id="form" class="sheet-body">
@@ -258,11 +213,11 @@
 
       <p id="err" class="err" role="alert" style="margin-top:1rem"></p>
 
-      <button type="submit" class="bg-brand-500 text-dark-900 font-bold text-xs uppercase tracking-[0.2em] px-6 py-4 w-full mt-4 hover:bg-brand-600 transition-colors">Confirmar agendamento</button>
+      <button type="submit" class="btn btn-gold btn-block">Confirmar agendamento</button>
     </form>
 
     <div id="done" class="done hidden">
-      <div class="ring !border-brand-500 !text-brand-500">
+      <div class="ring">
         <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path></svg>
       </div>
       <h3>Agendado com sucesso!</h3>
@@ -270,10 +225,10 @@
       <div id="managebox" class="box hidden">
         <b>Precisa desmarcar ou remarcar?</b>
         <p class="muted" style="margin-bottom:.5rem">Use o seu link pessoal (também vai na mensagem do WhatsApp):</p>
-        <a id="manage" class="link !text-brand-500" style="word-break:break-all"></a>
+        <a id="manage" class="link" style="word-break:break-all"></a>
       </div>
       <div class="actions" style="padding-top:1rem">
-        <a id="gcal" target="_blank" rel="noopener" class="btn btn-gold btn-block btn-sm !bg-brand-500 !text-dark-900 !border-0">Adicionar ao calendário</a>
+        <a id="gcal" target="_blank" rel="noopener" class="btn btn-gold btn-block btn-sm">Adicionar ao calendário</a>
         <a id="falar" target="_blank" rel="noopener" class="btn btn-line btn-block btn-sm hidden">Falar com o barbeiro no WhatsApp</a>
         <a href="/minha-conta" class="btn btn-line btn-block btn-sm">Ver meus agendamentos</a>
         <button id="skip" type="button" class="btn btn-line btn-block btn-sm">Fechar janela</button>
@@ -283,10 +238,10 @@
 </dialog>
 
 <script>
-// A LÓGICA DE JAVASCRIPT PERMANECE EXATAMENTE A MESMA PARA NÃO QUEBRAR O SISTEMA
 document.addEventListener("DOMContentLoaded", () => {
     const $ = s => document.querySelector(s);
 
+    // --- LÓGICA DE ANIMAÇÕES DE SCROLL ---
     if ('IntersectionObserver' in window) {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -296,25 +251,23 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
     }
 
+    // --- MENU MOBILE ---
     const btnMenu = $('#mobile-btn'), menuDiv = $('#mobile-menu');
     let menuOpen = false;
     const setMenu = open => {
       menuOpen = open;
       if (open) {
-        menuDiv.classList.remove('hidden');
-        menuDiv.classList.add('flex');
-        setTimeout(() => menuDiv.classList.remove('opacity-0'), 10);
+        menuDiv.classList.add('show');
+        setTimeout(() => menuDiv.classList.add('on'), 10);
       } else {
-        menuDiv.classList.add('opacity-0');
-        setTimeout(() => {
-            menuDiv.classList.add('hidden');
-            menuDiv.classList.remove('flex');
-        }, 300);
+        menuDiv.classList.remove('on');
+        setTimeout(() => menuDiv.classList.remove('show'), 300);
       }
     };
     btnMenu.addEventListener('click', () => setMenu(!menuOpen));
     document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => setMenu(false)));
 
+    // --- CONFIGURAÇÃO DO MAPA ---
     try {
         const q = encodeURIComponent({{ shop.address|tojson }});
         const mapEl = $('#mapa-google');
@@ -323,6 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (gpsEl) gpsEl.href = /iPad|iPhone|iPod/.test(navigator.userAgent) ? "https://maps.apple.com/?daddr=" + q + "&dirflg=d" : "https://www.google.com/maps/dir/?api=1&destination=" + q + "&travelmode=driving";
     } catch(e) { console.error(e); }
 
+    // --- SESSÃO (conta do cliente) ---
     let ME = null;
     const meP = fetch('/api/me').then(r => r.json()).then(j => { ME = j.user; atualizarConta(); return ME; }).catch(() => null);
     function atualizarConta() {
@@ -335,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
         location.href = '/entrar?next=' + encodeURIComponent('/?' + params.toString());
     };
 
+    // --- CARREGAMENTO DE DADOS ---
     const brl = v => Number(v).toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
     const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const SHOP_NAME = {{ shop.name|tojson }};
@@ -343,56 +298,55 @@ document.addEventListener("DOMContentLoaded", () => {
     const publicP = fetch('/api/public').then(r => r.json()).then(d => {
         BARBERS = d.barbers;
 
-        // AJUSTE DE ESTILOS DA API PARA TAILWIND (SERVIÇOS)
+        // Serviços (lista em formato de cardápio)
         $('#services').innerHTML = d.services.map(s => `
-            <div class="border-b border-dark-700 py-8 hover:border-brand-500 transition-colors group">
-                <div class="flex items-baseline gap-4">
-                    <h3 class="font-display text-2xl md:text-3xl font-light text-white group-hover:text-brand-500 transition-colors">${esc(s.name)}</h3>
-                    <span class="flex-1 min-w-[1rem] border-b border-dotted border-dark-700"></span>
-                    <span class="font-display text-2xl md:text-3xl text-brand-500 whitespace-nowrap">${brl(s.price)}</span>
+            <div class="svc">
+                <div class="svc-top">
+                    <h3>${esc(s.name)}</h3>
+                    <span class="leader"></span>
+                    <span class="price">${brl(s.price)}</span>
                 </div>
-                <p class="mt-2 text-sm text-gray-400">${esc(s.description||'')} <span class="ml-2 text-xs uppercase tracking-[0.15em] text-gray-500">${s.minutes} min</span></p>
-                <button type="button" data-open-booking data-service="${s.id}" class="mt-4 text-xs font-bold uppercase tracking-[0.3em] text-brand-500 hover:text-white hover:underline underline-offset-4 transition-all">Agendar \u2192</button>
+                <p class="desc">${esc(s.description||'')} <span class="time">${s.minutes} min</span></p>
+                <button type="button" data-open-booking data-service="${s.id}" class="link-btn">Agendar</button>
             </div>`).join('');
 
-        // AJUSTE DE ESTILOS DA API PARA TAILWIND (EQUIPE)
+        // Equipe
         const n = d.barbers.length, k = Math.min(n, 4);
         if (!n) $('#equipe').classList.add('hidden');
+        $('#barbers').className = `team n${k || 3}`;
         $('#barbers').innerHTML = d.barbers.map((b, i) => {
             const fotoUrl = b.photo || b.foto || '';
             const descTxt = b.description || b.descricao || '';
             const ini = esc(b.name.split(' ').map(x=>x[0]).slice(0,2).join(''));
             return `
-            <article class="group relative">
-                <div class="relative overflow-hidden aspect-[3/4] flex items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-colors-dark-700),_var(--tw-colors-dark-900))]">
-                    <span class="absolute left-4 top-3 font-display text-6xl text-brand-500/80 leading-none z-10">0${i + 1}</span>
+            <article class="member">
+                <div class="photo">
+                    <span class="num">0${i + 1}</span>
                     ${fotoUrl
-                      ? `<img src="${esc(fotoUrl)}" alt="${esc(b.name)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" onerror="this.remove()">`
-                      : `<span class="font-display font-light text-8xl md:text-9xl text-brand-500/20 select-none transition-all duration-700 group-hover:scale-110 group-hover:text-brand-500/60" aria-hidden="true">${ini}</span>`}
+                      ? `<img src="${esc(fotoUrl)}" alt="${esc(b.name)}" class="b-img" loading="lazy" decoding="async" onerror="this.remove()">`
+                      : `<span class="mono" aria-hidden="true">${ini}</span>`}
                 </div>
-                <h3 class="font-display text-2xl md:text-3xl text-white mt-5">${esc(b.name)}</h3>
-                <p class="text-[0.7rem] uppercase tracking-[0.2em] text-brand-500 mt-1">${esc(b.role||'Especialista')}</p>
-                ${descTxt ? `<p class="text-sm text-gray-400 mt-2 mb-3 leading-relaxed">${esc(descTxt)}</p>` : ''}
-                <div class="flex gap-4 items-center flex-wrap mt-3">
-                    <button type="button" data-open-booking data-barber="${esc(b.id)}" class="text-[0.7rem] font-bold uppercase tracking-[0.3em] text-brand-500 hover:underline hover:text-white transition-colors">Agendar com ${esc(b.name.split(' ')[0])}</button>
-                    ${b.whatsapp ? `<a target="_blank" rel="noopener" href="${wa(b.whatsapp, 'Olá, ' + b.name.split(' ')[0] + '! Vi o seu contato no site da ' + SHOP_NAME + '.')}" class="text-[0.7rem] font-bold uppercase tracking-[0.3em] text-gray-400 hover:text-brand-500 transition-colors mt-3 w-full">WhatsApp</a>` : ''}
+                <h3>${esc(b.name)}</h3>
+                <p class="role">${esc(b.role||'Especialista')}</p>
+                ${descTxt ? `<p class="bio">${esc(descTxt)}</p>` : ''}
+                <div class="b-actions">
+                    <button type="button" data-open-booking data-barber="${esc(b.id)}" class="link-btn">Agendar com ${esc(b.name.split(' ')[0])}</button>
+                    ${b.whatsapp ? `<a class="link-btn contact" target="_blank" rel="noopener" href="${wa(b.whatsapp, 'Olá, ' + b.name.split(' ')[0] + '! Vi o seu contato no site da ' + SHOP_NAME + '.')}">WhatsApp</a>` : ''}
                 </div>
             </article>`;
         }).join('');
 
+        // Produtos (seção só aparece se houver produtos)
         if (d.products.length) {
             $('#produtos').classList.remove('hidden');
             ['#nav-produtos', '#nav-produtos-m'].forEach(s => $(s).classList.remove('hidden'));
             $('#products').innerHTML = d.products.map((p, i) => `
-                <div class="relative flex flex-col justify-between min-h-[18rem] p-8 bg-dark-900 border-r border-b border-dark-700 hover:bg-dark-800 transition-colors group">
-                    <span class="font-display font-light text-7xl md:text-8xl leading-none text-dark-700 group-hover:text-brand-500/30 transition-colors">${String(i + 1).padStart(2, '0')}</span>
-                    <div class="mt-4">
-                        <p class="flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.3em] text-gray-500 mb-2">
-                            <span class="w-1.5 h-1.5 rounded-full ${p.stock>0?'bg-green-500':'bg-red-500'}"></span>
-                            ${p.stock>0?'Disponível':'Esgotado'}
-                        </p>
-                        <h3 class="font-display text-2xl md:text-3xl text-white mb-3">${esc(p.name)}</h3>
-                        <p class="text-brand-500">${brl(p.price)}</p>
+                <div class="prod">
+                    <span class="n">${String(i + 1).padStart(2, '0')}</span>
+                    <div>
+                        <p class="type"><span class="dot ${p.stock>0?'':'off'}"></span>${p.stock>0?'Disponível':'Esgotado'}</p>
+                        <h3>${esc(p.name)}</h3>
+                        <p class="pp">${brl(p.price)}</p>
                     </div>
                 </div>`).join('');
         }
@@ -401,14 +355,15 @@ document.addEventListener("DOMContentLoaded", () => {
         $('#fs').innerHTML = '<option value="" disabled selected>ESCOLHER...</option>' + d.services.map(s => `<option value="${s.id}">${esc(s.name)} – ${brl(s.price)} (${s.minutes} min)</option>`).join('');
     }).catch(e => console.error(e));
 
+    // --- MODAL & FORMULÁRIO ---
     const modal = $('#dlg'), form = $('#form'), divDone = $('#done'), inputData = $('#fd'), boxSlots = $('#slots');
     let chosenTime = null, openedAt = Date.now();
 
     async function abrirModal(servico, barbeiro) {
-        await publicP;
+        await publicP;  // os serviços precisam estar na lista antes de escolher um
         form.classList.remove('hidden'); divDone.classList.add('hidden'); $('#managebox').classList.add('hidden');
         const t = new Date(); inputData.min = inputData.value = t.toLocaleDateString('en-CA');
-        if (servico) $('#fs').value = servico;
+        if (servico) $('#fs').value = servico;  // "Agendar" no cartão já escolhe o serviço
         if (barbeiro) $('#fb').value = barbeiro;
         openedAt = Date.now();
         modal.showModal();
@@ -418,10 +373,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener('click', async e => {
         const opener = e.target.closest('[data-open-booking]');
         if (!opener) return;
-        if (!(await meP)) return irParaLogin(opener.dataset.service, opener.dataset.barber);
+        if (!(await meP)) return irParaLogin(opener.dataset.service, opener.dataset.barber);  // agendar exige conta
         abrirModal(opener.dataset.service, opener.dataset.barber);
     });
 
+    // voltou do login com ?agendar=... -> abre o agendamento
     const params = new URLSearchParams(location.search);
     const pedido = params.get('agendar'), pedidoBarb = params.get('barber');
     if (pedido) {
