@@ -10,24 +10,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&family=Rye&family=Smokum&display=swap" rel="stylesheet">
 <style>
-/* Painel — mesma identidade do site (Noir): fundo quase preto quente, dourado, Western/Smokum/Rye + Cormorant + Manrope */
-@font-face{font-family:"Western";src:local("Western"),local("WESTERN"),url("/static/fonts/Western.woff2") format("woff2"),url("/static/fonts/Western.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+/* Painel — mesma identidade do site (Noir): fundo quase preto quente, dourado, IFC Insane Rodeo/Rye/Smokum + Cormorant + Manrope */
+@font-face{font-family:"IFC Insane Rodeo";src:local("IFC Insane Rodeo"),local("IFC INSANE RODEO"),local("IFCInsaneRodeo"),url("/static/fonts/IFCInsaneRodeo.woff2") format("woff2"),url("/static/fonts/IFCInsaneRodeo.ttf") format("truetype"),url("/static/fonts/IFC_Insane_Rodeo.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
 :root{color-scheme:dark;--bg:#090706;--card:#110f0d;--ink:#ede7dd;--mute:#938b7f;--line:#2d2823;--gold:#d7a85b;--gold-d:#af7940;
 --grad:linear-gradient(120deg,#af7940,#efcc83,#bd853f);--on-gold:#090706;--sec:#1b1715;
 --ok:#6fd3a0;--okbg:rgba(111,211,160,.1);--bad:#ff8a80;--badbg:rgba(222,60,55,.13);--warn:#d7a85b;--warnbg:rgba(215,168,91,.1);--r:4px;
 --display:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
---western:"Western","Smokum","Rye",var(--display);
---western-shadow:2px 3px 0px #000,0px 6px 14px rgba(0,0,0,.85),0px 0px 18px rgba(215,168,91,.22)}
+--rodeo:"IFC Insane Rodeo","Rye","Smokum",var(--display);
+--rodeo-shadow:2px 3px 0px #000,0px 6px 14px rgba(0,0,0,.85),0px 0px 18px rgba(215,168,91,.22)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--gold);color:var(--on-gold)}
 header{background:rgba(9,7,6,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
 .top{max-width:1000px;margin:auto;padding:12px 14px 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.brand{font-family:var(--western);font-weight:400;font-style:normal;font-size:1.85rem;line-height:1;letter-spacing:.05em;text-shadow:var(--western-shadow)}
+.brand{font-family:var(--rodeo);font-weight:400;font-style:normal;font-size:1.75rem;line-height:1;letter-spacing:.04em;text-shadow:var(--rodeo-shadow)}
 .brand small{font-family:var(--sans);font-size:.65rem;color:var(--mute);font-weight:500;letter-spacing:.3em;text-transform:uppercase;margin-left:.4rem;text-shadow:none}
-.font-western,#siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-family:var(--western);font-weight:400;font-style:normal;letter-spacing:.05em;text-shadow:var(--western-shadow)}
-.font-western.text-gold-gradient,.font-western .text-gold-gradient{text-shadow:none;filter:drop-shadow(2px 3px 0px #000) drop-shadow(0px 6px 12px rgba(0,0,0,.85)) drop-shadow(0px 0px 14px rgba(215,168,91,.28))}
-#siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-size:1.3rem}
+.font-rodeo,#siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-family:var(--rodeo);font-weight:400;font-style:normal;letter-spacing:.04em;text-shadow:var(--rodeo-shadow)}
+.font-rodeo.text-gold-gradient,.font-rodeo .text-gold-gradient{text-shadow:none;filter:drop-shadow(2px 3px 0px #000) drop-shadow(0px 6px 12px rgba(0,0,0,.85)) drop-shadow(0px 0px 14px rgba(215,168,91,.28))}
+#siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-size:1.2rem}
 .sp{flex:1}
 .lnk{font-size:11px;color:var(--mute);text-decoration:none;padding:4px 6px;text-transform:uppercase;letter-spacing:.2em;transition:color .2s}
 .lnk:hover{color:var(--gold)}
