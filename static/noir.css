@@ -7,10 +7,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Rye&family=Smokum&display=swap');
 
 @font-face {
-  font-family: "Western";
-  src: local("Western"), local("WESTERN"),
-       url("/static/fonts/Western.woff2") format("woff2"),
-       url("/static/fonts/Western.ttf") format("truetype");
+  font-family: "IFC Insane Rodeo";
+  src: local("IFC Insane Rodeo"), local("IFC INSANE RODEO"), local("IFCInsaneRodeo"),
+       url("/static/fonts/IFCInsaneRodeo.woff2") format("woff2"),
+       url("/static/fonts/IFCInsaneRodeo.ttf") format("truetype"),
+       url("/static/fonts/IFC_Insane_Rodeo.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -35,8 +36,8 @@
   --radius: .25rem;
   --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-western: "Western", "Smokum", "Rye", var(--font-display);
-  --western-shadow: 2px 3px 0px #000, 0px 6px 14px rgba(0, 0, 0, .85), 0px 0px 18px rgba(215, 168, 91, .22);
+  --font-rodeo: "IFC Insane Rodeo", "Rye", "Smokum", var(--font-display);
+  --rodeo-shadow: 2px 3px 0px #000, 0px 6px 14px rgba(0, 0, 0, .85), 0px 0px 18px rgba(215, 168, 91, .22);
 }
 
 /* ------------------------------------------------------------ base */
@@ -65,15 +66,15 @@ button { font-family: inherit; }
 .text-gold-gradient { background: var(--gold-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .kicker { font-size: .75rem; text-transform: uppercase; letter-spacing: .4em; color: var(--primary); }
 .display { font-family: var(--font-display); font-weight: 300; }
-.font-western {
-  font-family: var(--font-western);
+.font-rodeo {
+  font-family: var(--font-rodeo);
   font-style: normal;
   font-weight: 400;
-  letter-spacing: .05em;
-  text-shadow: var(--western-shadow);
+  letter-spacing: .04em;
+  text-shadow: var(--rodeo-shadow);
 }
-.font-western.text-gold-gradient,
-.font-western .text-gold-gradient {
+.font-rodeo.text-gold-gradient,
+.font-rodeo .text-gold-gradient {
   text-shadow: none;
   filter: drop-shadow(2px 3px 0px #000) drop-shadow(0px 6px 12px rgba(0, 0, 0, .85)) drop-shadow(0px 0px 14px rgba(215, 168, 91, .28));
 }
@@ -118,7 +119,7 @@ a.link-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
   background: rgba(9, 7, 6, .72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
 }
 .nav-in { max-width: 80rem; margin: 0 auto; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
-.logo { font-family: var(--font-western); font-weight: 400; font-style: normal; font-size: 1.75rem; letter-spacing: .05em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 62vw; text-shadow: var(--western-shadow); }
+.logo { font-family: var(--font-rodeo); font-weight: 400; font-style: normal; font-size: 1.6rem; letter-spacing: .04em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 62vw; text-shadow: var(--rodeo-shadow); }
 .nav-links { display: none; gap: 2rem; font-size: .75rem; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-fg); }
 .nav-links a { text-decoration: none; transition: color .3s; }
 .nav-links a:hover { color: var(--primary); }
@@ -159,12 +160,12 @@ a.link-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
 .hero-in { width: 100%; max-width: 80rem; margin: 0 auto; padding: 8rem 1.5rem 6rem; }
 .hero h1 {
   margin-top: 1.5rem;
-  font-family: var(--font-western);
+  font-family: var(--font-rodeo);
   font-weight: 400;
   font-style: normal;
-  font-size: clamp(3.5rem, 13vw, 9.5rem);
-  line-height: .98;
-  letter-spacing: .05em;
+  font-size: clamp(3.25rem, 12vw, 9rem);
+  line-height: 1.02;
+  letter-spacing: .04em;
   overflow-wrap: anywhere;
   text-shadow: 4px 6px 0px #000, 0px 12px 28px rgba(0, 0, 0, .95), 0px 0px 30px rgba(215, 168, 91, .25);
 }
@@ -258,7 +259,7 @@ a.link-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* rodapé */
 .footer { border-top: 1px solid var(--border); padding: 3rem 1.5rem; text-align: center; font-size: .7rem; text-transform: uppercase; letter-spacing: .3em; color: var(--muted-fg); }
-.footer .logo { display: inline-block; max-width: none; font-family: var(--font-western); font-weight: 400; font-style: normal; font-size: 2.25rem; letter-spacing: .05em; text-transform: none; color: var(--foreground); text-shadow: var(--western-shadow); }
+.footer .logo { display: inline-block; max-width: none; font-family: var(--font-rodeo); font-weight: 400; font-style: normal; font-size: 2.1rem; letter-spacing: .04em; text-transform: none; color: var(--foreground); text-shadow: var(--rodeo-shadow); }
 .footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem 1.75rem; margin: 1.5rem 0; }
 .footer nav a { text-decoration: none; transition: color .3s; }
 .footer nav a:hover { color: var(--primary); }
