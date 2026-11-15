@@ -387,3 +387,8 @@ dialog.sheet::backdrop { background: rgba(9, 7, 6, .88); -webkit-backdrop-filter
   .svc h3, .price { font-size: 1.6rem; }
   .prod .n { font-size: 4.5rem; }
 }
+
+/* logo em imagem */
+.logo-img { display: block; height: 3.5rem; width: auto; max-width: 100%; }
+.footer .logo-img { height: 6rem; }
+.brand .logo-img { height: 2.75rem; display: inline-block; vertical-align: middle; }
