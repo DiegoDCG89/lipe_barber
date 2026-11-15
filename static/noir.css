@@ -4,6 +4,18 @@
    (o painel /admin tem o próprio CSS, com a mesma paleta)
    ===================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+
+@font-face {
+  font-family: "Lost Saloon";
+  src: local("Lost Saloon"), local("LostSaloon"),
+       url("/static/fonts/LostSaloon.woff2") format("woff2"),
+       url("/static/fonts/LostSaloon.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: #090706;
   --foreground: #ede7dd;
@@ -23,6 +35,7 @@
   --radius: .25rem;
   --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-saloon: "Lost Saloon", "Rye", var(--font-display);
 }
 
 /* ------------------------------------------------------------ base */
@@ -51,6 +64,7 @@ button { font-family: inherit; }
 .text-gold-gradient { background: var(--gold-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .kicker { font-size: .75rem; text-transform: uppercase; letter-spacing: .4em; color: var(--primary); }
 .display { font-family: var(--font-display); font-weight: 300; }
+.font-saloon { font-family: var(--font-saloon); font-style: normal; font-weight: 400; letter-spacing: .04em; }
 .stack > * + * { margin-top: 1rem; }
 
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
@@ -92,7 +106,7 @@ a.link-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
   background: rgba(9, 7, 6, .72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
 }
 .nav-in { max-width: 80rem; margin: 0 auto; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
-.logo { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: .02em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 62vw; }
+.logo { font-family: var(--font-saloon); font-weight: 400; font-style: normal; font-size: 1.5rem; letter-spacing: .04em; text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 62vw; }
 .nav-links { display: none; gap: 2rem; font-size: .75rem; text-transform: uppercase; letter-spacing: .25em; color: var(--muted-fg); }
 .nav-links a { text-decoration: none; transition: color .3s; }
 .nav-links a:hover { color: var(--primary); }
@@ -131,7 +145,7 @@ a.link-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
 }
 .hero-fade { position: absolute; inset: 0; z-index: -1; background: var(--fade); }
 .hero-in { width: 100%; max-width: 80rem; margin: 0 auto; padding: 8rem 1.5rem 6rem; }
-.hero h1 { margin-top: 1.5rem; font-family: var(--font-display); font-weight: 300; font-size: clamp(3.25rem, 13vw, 10rem); line-height: .9; overflow-wrap: anywhere; }
+.hero h1 { margin-top: 1.5rem; font-family: var(--font-saloon); font-weight: 400; font-style: normal; font-size: clamp(3rem, 11vw, 8.5rem); line-height: .95; letter-spacing: .04em; overflow-wrap: anywhere; }
 .hero p.lead { margin-top: 2rem; max-width: 36rem; font-size: 1.125rem; color: var(--muted-fg); }
 .hero .btn { margin-top: 2.5rem; }
 
@@ -218,7 +232,7 @@ a.link-btn:hover { text-decoration: underline; text-underline-offset: 4px; }
 
 /* rodapé */
 .footer { border-top: 1px solid var(--border); padding: 3rem 1.5rem; text-align: center; font-size: .7rem; text-transform: uppercase; letter-spacing: .3em; color: var(--muted-fg); }
-.footer .logo { display: inline-block; max-width: none; font-size: 2rem; letter-spacing: .02em; text-transform: none; color: var(--foreground); }
+.footer .logo { display: inline-block; max-width: none; font-family: var(--font-saloon); font-weight: 400; font-style: normal; font-size: 2rem; letter-spacing: .04em; text-transform: none; color: var(--foreground); }
 .footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem 1.75rem; margin: 1.5rem 0; }
 .footer nav a { text-decoration: none; transition: color .3s; }
 .footer nav a:hover { color: var(--primary); }
