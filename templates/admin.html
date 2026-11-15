@@ -8,28 +8,24 @@
 <title>Painel · {{ shop.name }}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&family=Rye&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* Painel — mesma identidade do site (Noir): fundo quase preto quente, dourado, Lost Saloon/Rye + Cormorant + Manrope */
-@font-face{font-family:"Lost Saloon";src:local("Lost Saloon"),local("LostSaloon"),url("/static/fonts/LostSaloon.woff2") format("woff2"),url("/static/fonts/LostSaloon.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+/* Painel — mesma identidade do site (Noir): fundo quase preto quente, dourado, Cormorant + Manrope */
 :root{color-scheme:dark;--bg:#090706;--card:#110f0d;--ink:#ede7dd;--mute:#938b7f;--line:#2d2823;--gold:#d7a85b;--gold-d:#af7940;
 --grad:linear-gradient(120deg,#af7940,#efcc83,#bd853f);--on-gold:#090706;--sec:#1b1715;
 --ok:#6fd3a0;--okbg:rgba(111,211,160,.1);--bad:#ff8a80;--badbg:rgba(222,60,55,.13);--warn:#d7a85b;--warnbg:rgba(215,168,91,.1);--r:4px;
---display:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
---saloon:"Lost Saloon","Rye",var(--display)}
+--display:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--gold);color:var(--on-gold)}
 header{background:rgba(9,7,6,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
 .top{max-width:1000px;margin:auto;padding:12px 14px 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.brand{font-family:var(--saloon);font-weight:400;font-style:normal;font-size:1.65rem;line-height:1;letter-spacing:.04em}
+.brand{font-family:var(--display);font-size:1.65rem;line-height:1;letter-spacing:.02em}
 .brand small{font-family:var(--sans);font-size:.65rem;color:var(--mute);font-weight:500;letter-spacing:.3em;text-transform:uppercase;margin-left:.4rem}
-.font-saloon,#siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-family:var(--saloon);font-weight:400;font-style:normal;letter-spacing:.04em}
-#siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-size:1.15rem}
 .sp{flex:1}
 .lnk{font-size:11px;color:var(--mute);text-decoration:none;padding:4px 6px;text-transform:uppercase;letter-spacing:.2em;transition:color .2s}
 .lnk:hover{color:var(--gold)}
-nav{max-width:1000px;margin:auto;display:flex;gap:2px;overflow-x:auto;padding:0 10px;scrollbar-width:none}
+nav{max-width:1000px;margin:auto;display:flex;flex-wrap:wrap;gap:2px;padding:0 10px}
 nav::-webkit-scrollbar{display:none}
 nav button{border:0;border-bottom:2px solid transparent;background:none;color:var(--mute);font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.22em;padding:14px 12px;cursor:pointer;white-space:nowrap;transition:color .2s}
 nav button:hover{color:var(--gold)}
@@ -116,10 +112,10 @@ dialog h3{margin:0 0 14px;font-size:1.9rem;font-weight:300;line-height:1}
     <button data-tab="despesas">Despesas</button>
     <button data-tab="estoque">Estoque</button>
     <button data-tab="cad">Cadastros</button>
+    <button data-tab="site">Site</button>
     <button data-tab="horarios">Horários</button>
     <button data-tab="usuarios">Usuários</button>
     <button data-tab="mensagens">Mensagens</button>
-    <button data-tab="site">Site</button>
   </nav>
 </header>
 <main id="view" aria-live="polite"></main>
