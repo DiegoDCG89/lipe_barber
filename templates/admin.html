@@ -8,77 +8,77 @@
 <title>Painel · {{ shop.name }}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@400;500;700&family=Rye&family=Smokum&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Smokum&display=swap" rel="stylesheet">
 <style>
-/* Painel — mesma identidade do site (Noir): fundo quase preto quente, dourado, IFC Insane Rodeo/Rye/Smokum + Cormorant + Manrope */
+/* Painel — todas as letras na fonte de barbearia (IFC Insane Rodeo / Rye / Smokum) com sombra */
 @font-face{font-family:"IFC Insane Rodeo";src:local("IFC Insane Rodeo"),local("IFC INSANE RODEO"),local("IFCInsaneRodeo"),url("/static/fonts/IFCInsaneRodeo.woff2") format("woff2"),url("/static/fonts/IFCInsaneRodeo.ttf") format("truetype"),url("/static/fonts/IFC_Insane_Rodeo.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
 :root{color-scheme:dark;--bg:#090706;--card:#110f0d;--ink:#ede7dd;--mute:#938b7f;--line:#2d2823;--gold:#d7a85b;--gold-d:#af7940;
 --grad:linear-gradient(120deg,#af7940,#efcc83,#bd853f);--on-gold:#090706;--sec:#1b1715;
 --ok:#6fd3a0;--okbg:rgba(111,211,160,.1);--bad:#ff8a80;--badbg:rgba(222,60,55,.13);--warn:#d7a85b;--warnbg:rgba(215,168,91,.1);--r:4px;
---display:"Cormorant Garamond",Georgia,serif;--sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
---rodeo:"IFC Insane Rodeo","Rye","Smokum",var(--display);
---rodeo-shadow:2px 3px 0px #000,0px 6px 14px rgba(0,0,0,.85),0px 0px 18px rgba(215,168,91,.22)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+--rodeo:"IFC Insane Rodeo","Rye","Smokum",Georgia,serif;--display:var(--rodeo);--sans:var(--rodeo);
+--text-shadow:2px 2px 0px #000,0px 4px 10px rgba(0,0,0,.85);
+--rodeo-shadow:2px 3px 0px #000,0px 6px 14px rgba(0,0,0,.9),0px 0px 18px rgba(215,168,91,.22)}
+*{box-sizing:border-box;font-family:var(--rodeo)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--rodeo);letter-spacing:.03em;text-shadow:var(--text-shadow);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--gold);color:var(--on-gold)}
 header{background:rgba(9,7,6,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
 .top{max-width:1000px;margin:auto;padding:12px 14px 8px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .brand{font-family:var(--rodeo);font-weight:400;font-style:normal;font-size:1.75rem;line-height:1;letter-spacing:.04em;text-shadow:var(--rodeo-shadow)}
-.brand small{font-family:var(--sans);font-size:.65rem;color:var(--mute);font-weight:500;letter-spacing:.3em;text-transform:uppercase;margin-left:.4rem;text-shadow:none}
+.brand small{font-family:var(--rodeo);font-size:.7rem;color:var(--mute);font-weight:400;letter-spacing:.22em;text-transform:uppercase;margin-left:.4rem}
 .font-rodeo,#siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-family:var(--rodeo);font-weight:400;font-style:normal;letter-spacing:.04em;text-shadow:var(--rodeo-shadow)}
 .font-rodeo.text-gold-gradient,.font-rodeo .text-gold-gradient{text-shadow:none;filter:drop-shadow(2px 3px 0px #000) drop-shadow(0px 6px 12px rgba(0,0,0,.85)) drop-shadow(0px 0px 14px rgba(215,168,91,.28))}
 #siteform input[name="nome"],#siteform input[name="nome_curto"],#siteform input[name="marca"]{font-size:1.2rem}
 .sp{flex:1}
-.lnk{font-size:11px;color:var(--mute);text-decoration:none;padding:4px 6px;text-transform:uppercase;letter-spacing:.2em;transition:color .2s}
+.lnk{font-size:12px;color:var(--mute);text-decoration:none;padding:4px 6px;text-transform:uppercase;letter-spacing:.18em;transition:color .2s}
 .lnk:hover{color:var(--gold)}
 nav{max-width:1000px;margin:auto;display:flex;gap:2px;overflow-x:auto;padding:0 10px;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
-nav button{border:0;border-bottom:2px solid transparent;background:none;color:var(--mute);font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.22em;padding:14px 12px;cursor:pointer;white-space:nowrap;transition:color .2s}
+nav button{border:0;border-bottom:2px solid transparent;background:none;color:var(--mute);font:400 12px/1 var(--rodeo);text-transform:uppercase;letter-spacing:.18em;padding:14px 12px;cursor:pointer;white-space:nowrap;text-shadow:var(--text-shadow);transition:color .2s}
 nav button:hover{color:var(--gold)}
 nav button.on{color:var(--gold);border-bottom-color:var(--gold)}
 main{max-width:1000px;margin:auto;padding:22px 14px 70px}
-h2{font-family:var(--display);font-weight:400;font-size:2rem;line-height:1.1;margin:30px 0 14px}
+h2{font-family:var(--rodeo);font-weight:400;font-size:1.85rem;line-height:1.15;margin:30px 0 14px;text-shadow:var(--rodeo-shadow)}
 h2:first-child{margin-top:4px}
-h3{font-family:var(--display);font-weight:400;font-size:1.6rem}
+h3{font-family:var(--rodeo);font-weight:400;font-size:1.5rem}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px}
 .grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
-.kpi .v{font-family:var(--display);font-size:2.2rem;font-weight:400;line-height:1.1;margin-top:2px}
-.kpi .l{font-size:10px;color:var(--mute);text-transform:uppercase;letter-spacing:.25em;font-weight:700}
+.kpi .v{font-family:var(--rodeo);font-size:2rem;font-weight:400;line-height:1.15;margin-top:4px}
+.kpi .l{font-size:11px;color:var(--mute);text-transform:uppercase;letter-spacing:.2em;font-weight:400}
 .bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .end{justify-content:flex-end}
-.btn{border:1px solid transparent;background:var(--grad);color:var(--on-gold);font:700 11px/1 var(--sans);text-transform:uppercase;letter-spacing:.2em;padding:12px 18px;border-radius:0;cursor:pointer;transition:transform .2s,border-color .2s,color .2s,background .2s}
+.btn{border:1px solid transparent;background:var(--grad);color:var(--on-gold);font:400 12px/1 var(--rodeo);text-transform:uppercase;letter-spacing:.18em;padding:12px 18px;border-radius:0;cursor:pointer;text-shadow:0 1px 0 rgba(255,255,255,.35);transition:transform .2s,border-color .2s,color .2s,background .2s}
 .btn:hover{transform:translateY(-1px)}
-.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line);text-shadow:var(--text-shadow)}
 .btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
-.btn.sm{padding:9px 12px;font-size:10px;letter-spacing:.16em}
-.btn.gold{background:var(--grad);color:var(--on-gold)}
-.btn.red{background:transparent;color:var(--bad);border-color:rgba(255,138,128,.5)}
+.btn.sm{padding:9px 12px;font-size:11px;letter-spacing:.14em}
+.btn.gold{background:var(--grad);color:var(--on-gold);text-shadow:0 1px 0 rgba(255,255,255,.35)}
+.btn.red{background:transparent;color:var(--bad);border-color:rgba(255,138,128,.5);text-shadow:var(--text-shadow)}
 .btn.red:hover{background:var(--badbg)}
 .btn:disabled{opacity:.5;cursor:wait;transform:none}
-input,select,textarea{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:var(--r);padding:9px 11px;max-width:100%;color-scheme:dark;transition:border-color .2s}
+input,select,textarea{font:inherit;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:var(--r);padding:9px 11px;max-width:100%;color-scheme:dark;text-shadow:var(--text-shadow);transition:border-color .2s}
 select option{background:var(--card);color:var(--ink)}
 input::placeholder{color:var(--mute);opacity:.7}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
 .btn:focus-visible,nav button:focus-visible,.lnk:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:var(--gold);margin-bottom:12px}
-label input,label select,label textarea{display:block;width:100%;margin-top:6px;color:var(--ink);text-transform:none;letter-spacing:normal;font-weight:400}
-label.chk{display:flex;gap:8px;align-items:center;color:var(--mute);text-transform:none;letter-spacing:normal;font-size:13px;font-weight:500}
+label{display:block;font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:12px}
+label input,label select,label textarea{display:block;width:100%;margin-top:6px;color:var(--ink);text-transform:none;letter-spacing:.03em;font-weight:400}
+label.chk{display:flex;gap:8px;align-items:center;color:var(--mute);text-transform:none;letter-spacing:.03em;font-size:13px;font-weight:400}
 label.chk input{width:auto;margin:0;accent-color:var(--gold)}
 .muted{color:var(--mute)}
-.text-gold-gradient{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.italic{font-style:italic}
-.cap{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:var(--gold);margin-bottom:6px}
-.big{font-family:var(--display);font-size:2rem;font-weight:400;line-height:1}
-.pill{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:0;border:1px solid var(--line);background:transparent;color:var(--mute);vertical-align:middle}
+.text-gold-gradient{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(2px 3px 0px #000) drop-shadow(0px 6px 12px rgba(0,0,0,.85)) drop-shadow(0px 0px 14px rgba(215,168,91,.28))}
+.italic{font-style:normal}
+.cap{display:block;font-size:11px;font-weight:400;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:6px}
+.big{font-family:var(--rodeo);font-size:1.85rem;font-weight:400;line-height:1}
+.pill{display:inline-block;font-size:10px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:0;border:1px solid var(--line);background:transparent;color:var(--mute);vertical-align:middle}
 .pill.ok{border-color:var(--ok);color:var(--ok);background:var(--okbg)}.pill.bad{border-color:var(--bad);color:var(--bad);background:var(--badbg)}.pill.warn{border-color:var(--gold);color:var(--gold);background:var(--warnbg)}
 .appt{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
-.appt .t{font-family:var(--display);font-weight:400;font-size:1.9rem;line-height:1;color:var(--gold);min-width:92px}
+.appt .t{font-family:var(--rodeo);font-weight:400;font-size:1.7rem;line-height:1.1;color:var(--gold);min-width:92px}
 .appt .i{flex:1;min-width:180px}
 .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
 table{border-collapse:collapse;width:100%;min-width:560px}
 th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
-th{font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:var(--mute);background:var(--sec);font-weight:700}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--mute);background:var(--sec);font-weight:400}
 tr:last-child td{border-bottom:0}
 tbody tr{transition:background .2s}
 tbody tr:hover{background:rgba(255,255,255,.02)}
@@ -91,13 +91,13 @@ td.n,th.n{text-align:right;white-space:nowrap}
 .alert{background:var(--warnbg);color:var(--warn);border:1px solid rgba(215,168,91,.35);border-radius:var(--r);padding:11px 14px;margin-bottom:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 dialog{border:1px solid var(--line);border-radius:var(--r);background:var(--card);color:var(--ink);padding:22px;width:min(440px,calc(100vw - 24px));box-shadow:0 30px 80px rgba(0,0,0,.6)}
 dialog::backdrop{background:rgba(9,7,6,.85);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
-dialog h3{margin:0 0 14px;font-size:1.9rem;font-weight:300;line-height:1}
-#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--grad);color:var(--on-gold);padding:12px 18px;border-radius:0;font:700 12px/1.3 var(--sans);letter-spacing:.08em;opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw}
-#toast.show{opacity:1}#toast.err{background:#de3c37;color:#fff}
+dialog h3{margin:0 0 14px;font-size:1.75rem;font-weight:400;line-height:1.1}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--grad);color:var(--on-gold);padding:12px 18px;border-radius:0;font:400 12px/1.3 var(--rodeo);letter-spacing:.08em;text-shadow:0 1px 0 rgba(255,255,255,.35);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20;max-width:90vw}
+#toast.show{opacity:1}#toast.err{background:#de3c37;color:#fff;text-shadow:var(--text-shadow)}
 .hrs input[type=time]{width:100%;min-width:92px}
 .b-thumb{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);vertical-align:middle;margin-right:10px}
 @media (prefers-reduced-motion:reduce){.btn,.btn:hover,#toast{transition:none;transform:none}}
-@media (max-width:560px){.top{gap:6px}.kpi .v{font-size:1.9rem}h2{font-size:1.7rem}}
+@media (max-width:560px){.top{gap:6px}.kpi .v{font-size:1.7rem}h2{font-size:1.55rem}}
 </style>
 </head>
 <body>
@@ -344,465 +344,4 @@ async function abrirMensagem(ctx) {
 }
 
 async function loadMensagens() {
-  const [bs, us] = await Promise.all([barbers(), api('/api/admin/users')]); S.users = us;
-  view.innerHTML = `<h2>Mensagens por WhatsApp</h2>
-    <p class="muted" style="margin-top:-6px">Escolha para quem enviar. O WhatsApp abre com a mensagem pronta; quem envia é a conta do WhatsApp aberta no seu aparelho. Ao escrever para um cliente você escolhe qual barbeiro assina (nome e número dele vão no fim da mensagem).</p>
-    <h2 style="font-size:1.5rem">Equipe</h2>
-    <div class="tbl"><table><tbody>${bs.filter(b => b.ativo).map(b => `<tr><td>${esc(b.nome)}<div class="muted" style="font-size:12px">${esc(b.funcao || '')}</div></td>
-      <td>${b.telefone ? esc(fmtTel(b.telefone)) : '<span class="pill warn">sem WhatsApp</span>'}</td>
-      <td class="n"><button class="btn sm" data-act="m-bar" data-id="${esc(b.id)}">Mensagem</button></td></tr>`).join('') || '<tr><td class="muted">Nenhum barbeiro ativo.</td></tr>'}</tbody></table></div>
-    <h2 style="font-size:1.5rem">Clientes</h2>
-    <div class="bar"><input type="search" id="qmsg" placeholder="Buscar por nome ou telefone" style="flex:1;min-width:200px" aria-label="Buscar cliente"></div>
-    <div id="mlist"></div>`;
-  renderMsgClientes();
-}
-function renderMsgClientes() {
-  const q = ($('#qmsg') ? $('#qmsg').value : '').trim().toLowerCase(), dig = q.replace(/\D/g, '');
-  const l = S.users.filter(u => u.telefone && (!q || (u.nome || '').toLowerCase().includes(q) || (dig && u.telefone.includes(dig)))).slice(0, 30);
-  $('#mlist').innerHTML = l.map(u => `<div class="card appt"><div class="i"><b>${esc(u.nome)}</b><br><span class="muted">${esc(fmtTel(u.telefone))}</span></div>
-      <button class="btn sm" data-act="m-cli" data-id="${esc(u.id)}">Mensagem</button></div>`).join('') || '<p class="muted">Nenhum cliente encontrado.</p>';
-}
-
-// janela com o link de redefinição de senha (copiar / abrir no WhatsApp, escolhendo quem assina)
-async function mostrarLink(r) {
-  const bs = (await barbers()).filter(b => b.ativo), dlg = $('#dlg'), f = $('#dlgform');
-  $('#dlgtitle').textContent = 'Link para criar nova senha';
-  f.onclick = f.onkeydown = dlg.onclose = null;
-  f.onsubmit = e => { e.preventDefault(); dlg.close(); };
-  const waUrl = id => { const b = bs.find(x => x.id === id); return `https://wa.me/55${r.tel}?text=${encodeURIComponent(r.msg + (b ? assinatura(b) : ''))}`; };
-  f.innerHTML = `<p class="muted" style="margin-top:0">Vale por 24 horas e só funciona uma vez. A senha atual continua valendo até a pessoa criar a nova.</p>
-    <label>Link<input id="lk" readonly value="${esc(r.url)}"></label>
-    ${r.tel ? `<label>Assinar a mensagem como<select id="lks">${options([['', 'Sem assinatura']].concat(bs.map(b => [b.id, b.nome + (b.telefone ? ' · ' + fmtTel(b.telefone) : '')])), '')}</select></label>` : ''}
-    <div class="row end"><button type="button" class="btn ghost" id="lkc">Copiar link</button>
-      ${r.tel ? `<a class="btn" id="lkw" href="${esc(waUrl(''))}" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">Abrir WhatsApp</a>` : ''}
-      <button class="btn ghost">Fechar</button></div>`;
-  if (r.tel) $('#lks').onchange = () => { $('#lkw').href = waUrl($('#lks').value); };
-  $('#lkc').onclick = async () => {
-    const i = $('#lk'); i.select();
-    try { await navigator.clipboard.writeText(r.url); } catch (_) { document.execCommand('copy'); }
-    toast('Link copiado');
-  };
-  dlg.showModal();
-}
-
-// ------------------------------------------------------------ navegação
-async function show(tab, quiet) {
-  S.tab = tab; history.replaceState(null, '', '#' + tab);
-  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
-  if (!quiet) view.innerHTML = '<p class="muted">Carregando…</p>';
-  try { await LOAD[tab](); }
-  catch (e) { view.innerHTML = `<div class="card"><b>Não foi possível carregar.</b><p class="muted">${esc(e.message)}</p><button class="btn" data-act="retry">Tentar de novo</button></div>`; }
-}
-$('#nav').onclick = e => { const b = e.target.closest('button[data-tab]'); if (b) show(b.dataset.tab); };
-
-// ------------------------------------------------------------ AGENDA
-const STATUS = {agendado: ['Agendado', ''], concluido: ['Concluído', 'ok'], faltou: ['Faltou', 'bad']};
-async function loadAgenda() {
-  const list = await api('/api/admin/appointments?day=' + S.day);
-  const dt = new Date(S.day + 'T12:00:00'), tit = dt.toLocaleDateString('pt-BR', {weekday: 'long', day: '2-digit', month: 'long'});
-  const total = list.filter(a => a.status !== 'faltou').reduce((s, a) => s + a.preco, 0);
-  S.agendaList = list;
-  view.innerHTML = `<div class="bar">
-      <button class="btn ghost" data-act="day" data-n="-1" aria-label="Dia anterior">‹</button>
-      <input type="date" id="dayin" value="${esc(S.day)}" aria-label="Dia">
-      <button class="btn ghost" data-act="day" data-n="1" aria-label="Próximo dia">›</button>
-      <button class="btn ghost" data-act="day" data-n="0">Hoje</button></div>
-    <h2>${esc(cap(tit))} <span class="muted" style="font-weight:400;font-size:14px">· ${list.length} atendimento(s) · ${brl(total)}</span></h2>
-    ${list.map(a => {
-      const [lb, cl] = STATUS[a.status] || [a.status, ''], ph = String(a.telefone || '').replace(/\D/g, '');
-      return `<div class="card appt"><div class="t">${esc(a.hora)}<div class="muted" style="font-weight:400;font-size:12px">até ${esc(a.fim)}</div></div>
-        <div class="i"><b>${esc(a.cliente)}</b> <span class="pill ${cl}">${lb}</span><br>
-        <span class="muted">${esc(a.servico)} · ${esc(a.barbeiro)} · ${brl(a.preco)}</span><br>
-        ${ph ? `<a class="lnk" style="padding-left:0" href="https://wa.me/55${ph}" target="_blank" rel="noopener">WhatsApp ${esc(fmtTel(ph))}</a>` : ''}
-        <div class="row" style="margin-top:8px">
-          ${ph ? `<button class="btn sm ghost" data-act="msg-cli" data-code="${esc(a.codigo)}">Mensagem ao cliente</button>` : ''}
-          <button class="btn sm ghost" data-act="msg-bar" data-code="${esc(a.codigo)}">Avisar barbeiro</button></div></div>
-        ${a.status === 'agendado' ? `<div class="row">
-          <button class="btn sm" data-act="done" data-code="${esc(a.codigo)}" data-preco="${a.preco}">Concluir</button>
-          <button class="btn sm ghost" data-act="miss" data-code="${esc(a.codigo)}">Faltou</button>
-          <button class="btn sm red" data-act="cancel" data-code="${esc(a.codigo)}">Cancelar</button></div>` : ''}</div>`;
-    }).join('') || '<p class="muted">Nenhum agendamento neste dia.</p>'}
-    <p class="muted" style="font-size:13px">Eventos criados à mão no Google Agenda bloqueiam o horário no site, mas não aparecem aqui.</p>`;
-}
-
-// ------------------------------------------------------------ RESUMO
-async function loadResumo() {
-  const d = await api('/api/admin/summary?month=' + S.month), max = Math.max(1, ...d.por_dia.map(x => x.total));
-  const dias = new Date(+S.month.slice(0, 4), +S.month.slice(5), 0).getDate(), porDia = Object.fromEntries(d.por_dia.map(x => [x.dia, x.total]));
-  view.innerHTML = `<div class="bar"><input type="month" id="monthin" value="${esc(S.month)}" aria-label="Mês"></div>
-    ${d.sem_forma ? `<div class="alert"><span><b>${d.sem_forma}</b> receita(s) sem forma de pagamento.</span><button class="btn sm" data-act="semforma">Classificar agora</button></div>` : ''}
-    <div class="grid">
-      <div class="card kpi"><div class="l">Receitas</div><div class="v pos">${brl(d.receitas)}</div></div>
-      <div class="card kpi"><div class="l">Despesas</div><div class="v neg">${brl(d.despesas)}</div></div>
-      <div class="card kpi"><div class="l">Saldo</div><div class="v ${d.saldo < 0 ? 'neg' : ''}">${brl(d.saldo)}</div></div>
-      <div class="card kpi"><div class="l">Atendimentos</div><div class="v">${d.atendimentos}</div></div>
-      <div class="card kpi"><div class="l">Ticket médio</div><div class="v">${brl(d.ticket_medio)}</div></div></div>
-    <h2>Receita por dia</h2><div class="card"><div class="bars" role="img" aria-label="Receita por dia do mês">
-      ${Array.from({length: dias}, (_, i) => `<div title="Dia ${i + 1}: ${brl(porDia[i + 1] || 0)}" style="height:${Math.round((porDia[i + 1] || 0) / max * 100)}%"></div>`).join('')}</div>
-      <div class="axis"><span>1</span><span>${dias}</span></div></div>
-    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
-      <div><h2>Por forma de pagamento</h2><div class="tbl"><table style="min-width:0"><tbody>
-        ${Object.entries(d.por_forma).map(([k, v]) => `<tr><td>${esc(FORMAS[k] || 'Sem forma informada')}</td><td class="n">${brl(v)}</td></tr>`).join('') || '<tr><td class="muted">Sem receitas neste mês.</td></tr>'}</tbody></table></div></div>
-      <div><h2>Por barbeiro</h2><div class="tbl"><table style="min-width:0"><tbody>
-        ${d.por_barbeiro.map(b => `<tr><td>${esc(b.nome)}</td><td class="n">${brl(b.total)}</td></tr>`).join('') || '<tr><td class="muted">Sem receitas neste mês.</td></tr>'}</tbody></table></div></div>
-      <div><h2>Despesas por categoria</h2><div class="tbl"><table style="min-width:0"><tbody>
-        ${(d.despesas_por_categoria || []).map(c => `<tr><td>${esc(cap(c.nome))}</td><td class="n neg">${brl(c.total)}</td></tr>`).join('') || '<tr><td class="muted">Sem despesas neste mês.</td></tr>'}</tbody></table></div></div></div>`;
-}
-
-// ------------------------------------------------------------ LANÇAMENTOS
-async function loadLanc() {
-  S.tx = await api('/api/admin/transactions?month=' + S.month);
-  const rows = S.noForma ? S.tx.filter(t => t.tipo === 'receita' && !FORMAS[t.forma_pgto]) : S.tx;
-  view.innerHTML = `<div class="bar"><input type="month" id="monthin" value="${esc(S.month)}" aria-label="Mês">
-      <button class="btn" data-act="newtx">+ Novo lançamento</button>
-      <label class="chk" style="margin:0"><input type="checkbox" id="nofi"${S.noForma ? ' checked' : ''}> só sem forma de pagamento</label></div>
-    <div class="tbl"><table><thead><tr><th>Data</th><th>Descrição</th><th>Forma</th><th class="n">Valor</th><th></th></tr></thead><tbody>
-    ${rows.map(t => `<tr><td>${fdata(t.data)}</td><td>${esc(t.descricao)}<div class="muted" style="font-size:12px">${esc(t.categoria)}${t.barbeiro ? ' · ' + esc(t.barbeiro) : ''}</div></td>
-      <td>${t.tipo === 'despesa' ? '<span class="pill bad">despesa</span>' : FORMAS[t.forma_pgto] ? esc(FORMAS[t.forma_pgto]) : `<select class="q-forma" data-id="${esc(t.id)}" aria-label="Classificar forma de pagamento" style="border-color:var(--gold);color:var(--gold);padding:5px 8px;font-size:12px;font-weight:700"><option value="">⚠ Classificar…</option>${formaOpts('')}</select>`}</td>
-      <td class="n ${t.tipo === 'despesa' ? 'neg' : 'pos'}">${t.tipo === 'despesa' ? '−' : ''}${brl(t.valor)}</td>
-      <td class="n"><div class="row end"><button class="btn sm ghost" data-act="edittx" data-id="${esc(t.id)}">Editar</button>${t.origem === 'painel' ? `<button class="btn sm red" data-act="deltx" data-id="${esc(t.id)}">Excluir</button>` : ''}</div></td></tr>`).join('') || '<tr><td colspan="5" class="muted">Nada por aqui.</td></tr>'}
-    </tbody></table></div>
-    <p class="muted" style="font-size:13px">Atendimentos concluídos e vendas entram sozinhos (só podem ser editados). Lançamentos feitos à mão no painel também podem ser excluídos. Para registrar gastos, use a aba Despesas.</p>`;
-}
-async function newTx() {
-  const bs = await barbers();
-  const v = await ask({title: 'Novo lançamento', ok: 'Lançar', values: {data: hoje(), tipo: 'receita', categoria: 'servico'}, fields: [
-    {k: 'tipo', label: 'Tipo', type: 'select', opts: [['receita', 'Receita'], ['despesa', 'Despesa']]},
-    {k: 'descricao', label: 'Descrição', req: true}, {k: 'valor', label: 'Valor (R$)', type: 'number', req: true, min: 0.01},
-    {k: 'data', label: 'Data', type: 'date', req: true},
-    {k: 'forma_pgto', label: 'Forma de pagamento', type: 'select', opts: [['', '—']].concat(Object.entries(FORMAS))},
-    {k: 'categoria', label: 'Categoria (servico, produto, aluguel…)', max: 40},
-    {k: 'barbeiro', label: 'Barbeiro (opcional)', type: 'select', opts: [['', '—']].concat(bs.filter(b => b.ativo).map(b => [b.nome, b.nome]))}]});
-  if (v) run(() => api('/api/admin/transactions', v), 'Lançamento salvo');
-}
-async function editTx(id) {
-  const t = S.tx.find(x => x.id === id); if (!t) return;
-  const desp = t.tipo === 'despesa';
-  const v = await ask({title: desp ? 'Editar despesa' : 'Editar lançamento', values: {...t, categoria: (t.categoria || '').toLowerCase()}, fields: [
-    {k: 'descricao', label: 'Descrição', req: true}, {k: 'valor', label: 'Valor (R$)', type: 'number', req: true, min: 0},
-    {k: 'data', label: 'Data', type: 'date', req: true},
-    {k: 'forma_pgto', label: 'Forma de pagamento', type: 'select', opts: [['', '—']].concat(Object.entries(FORMAS))},
-    desp ? {k: 'categoria', label: 'Categoria', type: 'select', opts: catOpts(t.categoria)} : {k: 'categoria', label: 'Categoria', max: 40}]});
-  if (v) run(() => api('/api/admin/transactions/' + encodeURIComponent(id), v), desp ? 'Despesa atualizada' : 'Lançamento atualizado');
-}
-
-// ------------------------------------------------------------ DESPESAS
-const CATS = ['aluguel', 'energia', 'água', 'internet e telefone', 'produtos e estoque', 'salários e comissões', 'marketing', 'manutenção', 'impostos e taxas', 'material de uso', 'outros'];
-const cap = t => t ? t.charAt(0).toUpperCase() + t.slice(1) : t;
-const catOpts = atual => { const l = CATS.slice(), a = (atual || '').toLowerCase(); if (a && !l.includes(a)) l.unshift(a); return l.map(c => [c, cap(c)]); };
-async function loadDespesas() {
-  S.tx = (await api('/api/admin/transactions?month=' + S.month)).filter(t => t.tipo === 'despesa');
-  const total = S.tx.reduce((t, x) => t + x.valor, 0), porCat = {};
-  S.tx.forEach(x => { const c = (x.categoria || 'outros').toLowerCase(); porCat[c] = (porCat[c] || 0) + x.valor; });
-  const padrao = S.month === hoje().slice(0, 7) ? hoje() : S.month + '-01';
-  view.innerHTML = `<div class="bar"><input type="month" id="monthin" value="${esc(S.month)}" aria-label="Mês"></div>
-    <div class="grid"><div class="card kpi"><div class="l">Despesas do mês</div><div class="v neg">${brl(total)}</div></div>
-      <div class="card kpi"><div class="l">Lançamentos</div><div class="v">${S.tx.length}</div></div></div>
-    <h2>Nova despesa</h2>
-    <form class="card" id="f-desp" novalidate>
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
-        <label style="grid-column:1/-1">Descrição<input id="dd" maxlength="110" placeholder="Ex.: Aluguel da loja" required></label>
-        <label>Valor (R$)<input id="dv" type="number" min="0.01" step="0.01" inputmode="decimal" required></label>
-        <label>Data<input id="dt" type="date" value="${padrao}" required></label>
-        <label>Categoria<select id="dc">${options(catOpts(''), 'outros')}</select></label>
-        <label>Forma de pagamento<select id="df">${options([['', '—']].concat(Object.entries(FORMAS)), '')}</select></label>
-        <label>Repetir por (meses)<input id="dr" type="number" min="1" max="12" step="1" value="1" inputmode="numeric"></label>
-      </div>
-      <p class="muted" style="font-size:12px;margin:0 0 12px">Despesa fixa (aluguel, internet)? Escolha em quantos meses repetir: cria um lançamento por mês, no mesmo dia.</p>
-      <button class="btn">Registrar despesa</button></form>
-    <h2>Por categoria</h2>
-    <div class="tbl"><table style="min-width:0"><tbody>${Object.entries(porCat).sort((a, b) => b[1] - a[1]).map(([c, v]) =>
-      `<tr><td>${esc(cap(c))}</td><td class="n neg">${brl(v)}</td><td class="n muted">${total ? Math.round(v / total * 100) : 0}%</td></tr>`).join('') || '<tr><td class="muted">Nenhuma despesa neste mês.</td></tr>'}</tbody></table></div>
-    <h2>Despesas do mês</h2>
-    <div class="tbl"><table><thead><tr><th>Data</th><th>Descrição</th><th>Forma</th><th class="n">Valor</th><th></th></tr></thead><tbody>
-    ${S.tx.map(t => `<tr><td>${fdata(t.data)}</td><td>${esc(t.descricao)}<div class="muted" style="font-size:12px">${esc(cap((t.categoria || 'outros').toLowerCase()))}</div></td>
-      <td>${esc(FORMAS[t.forma_pgto] || '—')}</td><td class="n neg">${brl(t.valor)}</td>
-      <td class="n"><div class="row end"><button class="btn sm ghost" data-act="edittx" data-id="${esc(t.id)}">Editar</button>${t.origem === 'painel' ? `<button class="btn sm red" data-act="deltx" data-id="${esc(t.id)}">Excluir</button>` : ''}</div></td></tr>`).join('') || '<tr><td colspan="5" class="muted">Nenhuma despesa neste mês.</td></tr>'}
-    </tbody></table></div>`;
-}
-
-// ------------------------------------------------------------ ESTOQUE
-async function loadEstoque() {
-  S.prod = await api('/api/admin/products');
-  const baixo = S.prod.filter(p => p.ativo && p.baixo).length;
-  view.innerHTML = `<div class="bar"><button class="btn" data-act="newprod">+ Novo produto</button></div>
-    ${baixo ? `<div class="alert"><b>${baixo}</b> produto(s) com estoque no mínimo ou abaixo.</div>` : ''}
-    <div class="tbl"><table><thead><tr><th>Produto</th><th class="n">Preço</th><th class="n">Estoque</th><th></th></tr></thead><tbody>
-    ${S.prod.map(p => `<tr style="${p.ativo ? '' : 'opacity:.5'}"><td>${esc(p.nome)}${p.ativo ? '' : ' <span class="pill">inativo</span>'}<div class="muted" style="font-size:12px">mínimo ${p.estoque_minimo}</div></td>
-      <td class="n">${brl(p.preco)}</td><td class="n"><span class="pill ${p.baixo ? 'bad' : 'ok'}">${p.estoque}</span></td>
-      <td class="n"><div class="row end">
-        <button class="btn sm" data-act="sell" data-id="${esc(p.id)}">Venda</button>
-        <button class="btn sm ghost" data-act="mov" data-t="entrada" data-id="${esc(p.id)}">Entrada</button>
-        <button class="btn sm ghost" data-act="mov" data-t="saida" data-id="${esc(p.id)}">Saída</button>
-        <button class="btn sm ghost" data-act="mov" data-t="ajuste" data-id="${esc(p.id)}">Ajuste</button>
-        <button class="btn sm ghost" data-act="editprod" data-id="${esc(p.id)}">Editar</button></div></td></tr>`).join('') || '<tr><td colspan="4" class="muted">Nenhum produto cadastrado.</td></tr>'}
-    </tbody></table></div>
-    <p class="muted" style="font-size:13px">O estoque nunca é digitado direto: ele é calculado pelas movimentações (entradas − saídas ± ajustes). Venda baixa o estoque e lança a receita.</p>`;
-}
-const prodFields = [{k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'preco', label: 'Preço (R$)', type: 'number', req: true, min: 0},
-  {k: 'estoque_minimo', label: 'Estoque mínimo (alerta)', type: 'number', step: '1', min: 0}, {k: 'ativo', label: 'Ativo no site', type: 'check'}];
-const newProdFields = [{k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'preco', label: 'Preço (R$)', type: 'number', req: true, min: 0},
-  {k: 'estoque_inicial', label: 'Estoque inicial (unidades atuais)', type: 'number', step: '1', min: 0},
-  {k: 'estoque_minimo', label: 'Estoque mínimo (alerta)', type: 'number', step: '1', min: 0}, {k: 'ativo', label: 'Ativo no site', type: 'check'}];
-
-// ------------------------------------------------------------ CADASTROS
-async function loadCad() {
-  S.barbers = null;
-  const [sv, bs] = await Promise.all([api('/api/admin/services'), barbers()]); S.serv = sv;
-  view.innerHTML = `<h2>Serviços <button class="btn sm" data-act="newserv" style="margin-left:8px">+ Novo</button></h2><div class="tbl"><table><thead><tr><th>Serviço</th><th class="n">Duração</th><th class="n">Preço</th><th></th></tr></thead><tbody>
-    ${sv.map(s => `<tr style="${s.ativo ? '' : 'opacity:.5'}"><td>${esc(s.nome)}${s.ativo ? '' : ' <span class="pill">inativo</span>'}<div class="muted" style="font-size:12px">${esc(s.descricao)}</div></td><td class="n">${s.minutos} min</td><td class="n">${brl(s.preco)}</td>
-      <td class="n"><button class="btn sm ghost" data-act="editserv" data-id="${esc(s.id)}">Editar</button></td></tr>`).join('') || '<tr><td colspan="4" class="muted">Nenhum serviço.</td></tr>'}</tbody></table></div>
-    <h2>Barbeiros <button class="btn sm" data-act="newbarb" style="margin-left:8px">+ Novo</button></h2><div class="tbl"><table><thead><tr><th>Profissional</th><th>WhatsApp</th><th></th></tr></thead><tbody>
-    ${bs.map(b => `<tr style="${b.ativo ? '' : 'opacity:.5'}"><td>
-      <div style="display:flex;align-items:center">
-        ${b.foto ? `<img src="${esc(b.foto)}" alt="" class="b-thumb">` : ''}
-        <div><b>${esc(b.nome)}</b>${b.ativo ? '' : ' <span class="pill">inativo</span>'}
-          <div class="muted" style="font-size:12px">${esc(b.funcao || '')}${b.descricao ? ' · ' + esc(b.descricao) : ''}</div>
-        </div>
-      </div></td>
-      <td>${b.telefone ? esc(fmtTel(b.telefone)) : '<span class="pill warn">sem WhatsApp</span>'}</td>
-      <td class="n"><button class="btn sm ghost" data-act="editbarb" data-id="${esc(b.id)}">Editar</button></td></tr>`).join('')}</tbody></table></div>
-    <p class="muted" style="font-size:13px">Itens inativos somem do site, mas o histórico continua. Antes de inativar um barbeiro, confira se ele não tem horários marcados.</p>`;
-}
-const servFields = [{k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'descricao', label: 'Descrição', max: 160},
-  {k: 'minutos', label: 'Duração (minutos)', type: 'number', step: '5', min: 5, req: true}, {k: 'preco', label: 'Preço (R$)', type: 'number', min: 0, req: true},
-  {k: 'ativo', label: 'Ativo no site', type: 'check'}];
-const barbFields = [
-  {k: 'nome', label: 'Nome', req: true, max: 60},
-  {k: 'funcao', label: 'Função / Especialidade (ex.: Mestre Barbeiro)', max: 60},
-  {k: 'foto', label: 'Foto do barbeiro', type: 'photo'},
-  {k: 'descricao', label: 'Descrição / Bio curta (aparece no card do site)', type: 'textarea', max: 240, rows: 3, ph: 'Especialista em cortes clássicos, degradê e barba na toalha quente.'},
-  {k: 'telefone', label: 'WhatsApp do barbeiro, com DDD (aparece no site para o cliente chamar)', type: 'tel', max: 20},
-  {k: 'ativo', label: 'Ativo no site', type: 'check'}
-];
-
-// ------------------------------------------------------------ HORÁRIOS E FOLGAS
-async function loadHorarios() {
-  const bs = await barbers(), b = S.hb || '*';
-  const [hs, folgas] = await Promise.all([api('/api/admin/hours?barber=' + encodeURIComponent(b)), api('/api/admin/timeoff')]);
-  const nome = id => id === '*' ? 'Todos' : (bs.find(x => x.id === id) || {nome: id}).nome;
-  view.innerHTML = `<h2>Expediente semanal</h2>
-    <div class="bar"><select id="hb" aria-label="Barbeiro">${options([['*', 'Horário geral (todos)']].concat(bs.filter(x => x.ativo).map(x => [x.id, x.nome])), b)}</select></div>
-    <div class="tbl hrs"><table><thead><tr><th>Dia</th><th>Abre</th><th>Fecha</th><th>Almoço de</th><th>até</th></tr></thead><tbody>
-    ${hs.map((h, i) => `<tr><td>${DIAS[i]}</td>${['abre', 'fecha', 'almoco_ini', 'almoco_fim'].map(k => `<td><input type="time" data-i="${i}" data-k="${k}" value="${esc(h[k])}" aria-label="${DIAS[i]} ${k}"></td>`).join('')}</tr>`).join('')}
-    </tbody></table></div>
-    <p class="muted" style="font-size:13px">Deixe “abre” e “fecha” vazios para o dia ficar fechado. Um barbeiro com horário próprio ignora o horário geral.</p>
-    <button class="btn" data-act="savehours">Salvar horários</button>
-    <h2>Folgas, feriados e bloqueios <button class="btn sm" data-act="newoff" style="margin-left:8px">+ Nova</button></h2>
-    <div class="tbl"><table><thead><tr><th>Data</th><th>Quem</th><th>Período</th><th>Motivo</th><th></th></tr></thead><tbody>
-    ${folgas.map(f => `<tr><td>${fdata(f.data)}/${f.data.slice(0, 4)}</td><td>${esc(nome(f.barbeiro))}</td><td>${f.inicio ? esc(f.inicio) + '–' + esc(f.fim) : 'dia todo'}</td><td>${esc(f.motivo)}</td>
-      <td class="n"><button class="btn sm red" data-act="deloff" data-row="${f.row}" data-d="${esc(f.data)}">Remover</button></td></tr>`).join('') || '<tr><td colspan="5" class="muted">Nenhuma folga futura.</td></tr>'}</tbody></table></div>`;
-}
-
-// ------------------------------------------------------------ SITE
-async function loadSite() {
-  const c = await api('/api/admin/config');
-  view.innerHTML = `<h2>Dados exibidos no site</h2><form class="card" id="siteform">
-    <label>Nome da barbearia<input name="nome" value="${esc(c.nome)}" maxlength="120" required></label>
-    <div class="grid"><label>Nome curto (cabeçalho)<input name="nome_curto" value="${esc(c.nome_curto)}" maxlength="40"></label>
-    <label>Marca do logo (até 6 letras)<input name="marca" value="${esc(c.marca)}" maxlength="6"></label></div>
-    <label>Endereço<input name="endereco" value="${esc(c.endereco)}" maxlength="200"></label>
-    <div class="grid"><label>WhatsApp (com DDD)<input name="whatsapp" value="${esc(c.whatsapp)}" inputmode="tel" maxlength="20"></label>
-    <label>Instagram (sem @)<input name="instagram" value="${esc(c.instagram)}" maxlength="60"></label></div>
-    <label>Descrição<textarea name="descricao" rows="2" maxlength="300">${esc(c.descricao)}</textarea></label>
-    <label>Intervalo entre horários (minutos)<input name="intervalo_min" type="number" min="5" max="120" step="5" value="${esc(c.intervalo_min)}"></label>
-    <button class="btn">Salvar</button></form>
-    <p class="muted" style="font-size:13px">As mudanças aparecem no site em até 1 minuto.</p>`;
-}
-
-// ------------------------------------------------------------ CAIXA (venda avulsa de produtos)
-S.cart = [];
-async function loadCaixa() {
-  const [prods, bs, tx] = await Promise.all([api('/api/admin/products'), barbers(), api('/api/admin/transactions?month=' + hoje().slice(0, 7))]);
-  S.prod = prods; S.bs = bs; S.vendasHoje = tx.filter(t => t.categoria === 'produto' && t.data === hoje());
-  renderCaixa();
-}
-function renderCaixa() {
-  const disp = S.prod.filter(p => p.ativo && p.estoque > 0), cat = Object.fromEntries(S.prod.map(p => [p.id, p]));
-  S.cart = S.cart.filter(i => cat[i.id]);
-  const total = S.cart.reduce((t, i) => t + cat[i.id].preco * i.q, 0);
-  view.innerHTML = `<h2>Venda de produtos</h2>
-    <div class="card">
-      <span class="cap">Adicionar à venda</span>
-      <div class="row"><select id="cp" aria-label="Produto" style="flex:1;min-width:200px">${options([['', disp.length ? 'Escolher produto…' : 'Nenhum produto com estoque disponível']].concat(disp.map(p => [p.id, `${p.nome} · ${brl(p.preco)} (${p.estoque} un.)`])), '')}${S.prod.filter(p => p.ativo && p.estoque <= 0).map(p => `<option value="" disabled>${esc(p.nome)} · sem estoque (registre Entrada na aba Estoque)</option>`).join('')}</select>
-        <input id="cq" type="number" min="1" step="1" value="1" inputmode="numeric" aria-label="Quantidade" style="width:76px">
-        <button class="btn" data-act="cart-add">Adicionar</button></div>
-      ${S.cart.length ? `<div class="tbl" style="margin-top:14px"><table style="min-width:0"><tbody>${S.cart.map(i => `<tr><td>${esc(cat[i.id].nome)}</td><td class="n">× ${i.q}</td><td class="n">${brl(cat[i.id].preco * i.q)}</td>
-          <td class="n"><button class="btn sm red" data-act="cart-del" data-id="${esc(i.id)}" aria-label="Remover">×</button></td></tr>`).join('')}</tbody></table></div>
-        <div class="row" style="justify-content:space-between;margin:16px 0 6px"><span class="cap" style="margin:0">Total</span><span class="big">${brl(total)}</span></div>
-        <div class="grid" style="margin-top:10px"><label>Forma de pagamento<select id="cf">${formaOpts('pix')}</select></label>
-          <label>Vendido por (opcional)<select id="cv">${options([['', '—']].concat(S.bs.filter(b => b.ativo).map(b => [b.nome, b.nome])), '')}</select></label></div>
-        <button class="btn" data-act="cart-fin" style="width:100%;padding:15px">Finalizar venda · ${brl(total)}</button>`
-        : '<p class="muted" style="margin:14px 0 0">Adicione os produtos da venda. Para vender junto com um corte, use “Concluir” na Agenda.</p>'}
-    </div>
-    <h2>Vendas de produtos hoje</h2>
-    <div class="tbl"><table><thead><tr><th>Produto</th><th>Forma</th><th class="n">Valor</th></tr></thead><tbody>
-      ${S.vendasHoje.map(t => `<tr><td>${esc(t.descricao)}${t.barbeiro ? `<div class="muted" style="font-size:12px">${esc(t.barbeiro)}</div>` : ''}</td><td>${esc(FORMAS[t.forma_pgto] || '—')}</td><td class="n pos">${brl(t.valor)}</td></tr>`).join('') || '<tr><td colspan="3" class="muted">Nenhuma venda de produto hoje.</td></tr>'}
-    </tbody></table></div>`;
-}
-
-// ------------------------------------------------------------ USUÁRIOS
-async function loadUsuarios() {
-  S.users = await api('/api/admin/users');
-  view.innerHTML = `<div class="bar"><input type="search" id="qusers" placeholder="Buscar por nome, e-mail ou telefone" style="flex:1;min-width:200px" aria-label="Buscar usuário"></div>
-    <div id="ulist"></div>
-    <p class="muted" style="font-size:13px"><b>Cliente</b> vê só a própria agenda e histórico. <b>Barbeiro</b> acessa este painel inteiro, inclusive o financeiro e esta tela. Dê esse acesso só a quem é da equipe. Quem se cadastra no site entra como cliente.</p>`;
-  renderUsuarios();
-}
-function renderUsuarios() {
-  const q = ($('#qusers') ? $('#qusers').value : '').trim().toLowerCase(), digitos = q.replace(/\D/g, '');
-  const l = S.users.filter(u => !q || (u.nome || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q) || (digitos && (u.telefone || '').includes(digitos)));
-  $('#ulist').innerHTML = l.map(u => `<div class="card appt" style="${u.ativo ? '' : 'opacity:.6'}">
-      <div class="i"><b>${esc(u.nome)}</b> ${u.papel === 'barbeiro' ? '<span class="pill warn">barbeiro</span>' : '<span class="pill">cliente</span>'}${u.ativo ? '' : ' <span class="pill bad">desativado</span>'}${u.voce ? ' <span class="pill ok">você</span>' : ''}<br>
-        <span class="muted">${esc(u.telefone)}${u.email ? ' · ' + esc(u.email) : ''}${u.criado_em ? ' · desde ' + esc(u.criado_em.split('-').reverse().join('/')) : ''}</span></div>
-      ${u.voce ? '' : `<div class="row">
-        <button class="btn sm ghost" data-act="u-papel" data-id="${esc(u.id)}" data-p="${u.papel === 'barbeiro' ? 'cliente' : 'barbeiro'}">${u.papel === 'barbeiro' ? 'Tornar cliente' : 'Tornar barbeiro'}</button>
-        <button class="btn sm ghost" data-act="m-cli" data-id="${esc(u.id)}">Mensagem</button>
-        <button class="btn sm ghost" data-act="u-link" data-id="${esc(u.id)}">Link de senha</button>
-        <button class="btn sm ghost" data-act="u-senha" data-id="${esc(u.id)}">Senha temporária</button>
-        <button class="btn sm ${u.ativo ? 'red' : ''}" data-act="u-ativo" data-id="${esc(u.id)}" data-v="${u.ativo ? '0' : '1'}">${u.ativo ? 'Desativar' : 'Reativar'}</button></div>`}</div>`).join('') || '<p class="muted">Nenhum usuário encontrado.</p>';
-}
-
-const LOAD = {despesas: loadDespesas, mensagens: loadMensagens, caixa: loadCaixa, usuarios: loadUsuarios, agenda: loadAgenda, resumo: loadResumo, lanc: loadLanc, estoque: loadEstoque, cad: loadCad, horarios: loadHorarios, site: loadSite};
-
-// ------------------------------------------------------------ eventos
-view.addEventListener('click', async e => {
-  const b = e.target.closest('[data-act]'); if (!b) return;
-  const d = b.dataset, act = d.act;
-  if (act === 'retry') return show(S.tab);
-  if (act === 'day') { const dt = new Date(S.day + 'T12:00:00'); if (+d.n) dt.setDate(dt.getDate() + +d.n); else return (S.day = hoje(), show('agenda')); S.day = dt.toLocaleDateString('en-CA'); return show('agenda'); }
-  if (act === 'done') {
-    let prods = [];
-    try { prods = (await api('/api/admin/products')).filter(p => p.ativo && p.estoque > 0); } catch (_) { /* sem produtos: conclui só o serviço */ }
-    const v = await ask({title: 'Concluir atendimento', ok: 'Concluir', values: {method: 'pix', discount: '', tip: ''}, fields: [
-      {k: 'method', label: 'Forma de pagamento', type: 'select', req: true, opts: Object.entries(FORMAS)},
-      {k: 'discount', label: `Desconto (R$) — serviço: ${brl(d.preco)}`, type: 'number', min: 0},
-      {k: 'tip', label: 'Gorjeta (R$), entra à parte', type: 'number', min: 0},
-      ...(prods.length ? [{k: 'products', label: 'Produtos vendidos junto (opcional)', type: 'items',
-        opts: prods.map(p => [p.id, `${p.nome} · ${brl(p.preco)} (${p.estoque} un.)`]), catalog: Object.fromEntries(prods.map(p => [p.id, p]))}] : [])]});
-    if (v) run(() => api(`/api/admin/appointments/${encodeURIComponent(d.code)}/status`, {status: 'concluido', ...v}), 'Atendimento concluído');
-  }
-  if (act === 'miss' && confirm('Marcar que o cliente faltou? O horário volta a ficar livre.')) run(() => api(`/api/admin/appointments/${encodeURIComponent(d.code)}/status`, {status: 'faltou'}), 'Marcado como faltou');
-  if (act === 'cancel' && confirm('Cancelar este agendamento? O evento será apagado da agenda.')) run(() => api(`/api/admin/appointments/${encodeURIComponent(d.code)}/status`, {status: 'cancelado'}), 'Agendamento cancelado');
-  if (act === 'semforma') { S.noForma = true; return show('lanc'); }
-  if (act === 'u-papel' && confirm(d.p === 'barbeiro' ? 'Dar acesso de BARBEIRO a este usuário? Ele poderá ver o painel inteiro, inclusive o financeiro.' : 'Voltar este usuário para cliente? Ele perde o acesso ao painel.'))
-    return run(() => api('/api/admin/users/' + encodeURIComponent(d.id), {papel: d.p}), 'Nível de acesso atualizado');
-  if (act === 'u-ativo' && confirm(d.v === '1' ? 'Reativar esta conta?' : 'Desativar esta conta? A pessoa sai do site na hora e não consegue entrar nem agendar.'))
-    return run(() => api('/api/admin/users/' + encodeURIComponent(d.id), {ativo: d.v === '1'}), d.v === '1' ? 'Conta reativada' : 'Conta desativada');
-  if (act === 'u-link') {
-    try { await mostrarLink(await api('/api/admin/users/' + encodeURIComponent(d.id) + '/link', {})); }
-    catch (err) { toast(err.message, true); }
-    return;
-  }
-  if (act === 'u-senha' && confirm('Gerar uma senha temporária? A senha atual deixa de funcionar e a pessoa sai dos aparelhos conectados.')) {
-    try { const r = await api('/api/admin/users/' + encodeURIComponent(d.id) + '/senha', {}); prompt('Senha temporária (copie e envie à pessoa; ela pode trocar em "Minha conta"):', r.senha); }
-    catch (err) { toast(err.message, true); }
-    return;
-  }
-  if (act === 'cart-add') {
-    const id = $('#cp').value, q = Math.max(1, parseInt($('#cq').value, 10) || 1);
-    if (!id) return toast('Escolha um produto.', true);
-    const p = S.prod.find(x => x.id === id), ex = S.cart.find(i => i.id === id), novo = (ex ? ex.q : 0) + q;
-    if (novo > p.estoque) return toast(`Só há ${p.estoque} em estoque.`, true);
-    if (ex) ex.q = novo; else S.cart.push({id, q});
-    return renderCaixa();
-  }
-  if (act === 'cart-del') { S.cart = S.cart.filter(i => i.id !== d.id); return renderCaixa(); }
-  if (act === 'cart-fin') {
-    return run(async () => {
-      await api('/api/admin/sales', {items: S.cart.map(i => ({product: i.id, quantidade: i.q})), method: $('#cf').value, barbeiro: $('#cv').value});
-      S.cart = [];
-    }, 'Venda registrada');
-  }
-  if (act === 'msg-cli' || act === 'msg-bar') {
-    const a = (S.agendaList || []).find(x => x.codigo === d.code); if (!a) return;
-    return abrirMensagem(act === 'msg-cli' ? {para: 'cliente', nome: a.cliente, tel: a.telefone, barbeiroId: a.barbeiro_id, appt: a, data: S.day}
-                                           : {para: 'barbeiro', nome: a.barbeiro, barbeiroId: a.barbeiro_id, appt: a, data: S.day});
-  }
-  if (act === 'm-bar') return abrirMensagem({para: 'barbeiro', barbeiroId: d.id});
-  if (act === 'm-cli') { const u = (S.users || []).find(x => x.id === d.id); return u ? abrirMensagem({para: 'cliente', nome: u.nome, tel: u.telefone}) : undefined; }
-  if (act === 'deltx' && confirm('Excluir este lançamento? Não dá para desfazer.'))
-    return run(() => api('/api/admin/transactions/' + encodeURIComponent(d.id) + '/delete', {}), 'Lançamento excluído');
-  if (act === 'newtx') return newTx();
-  if (act === 'edittx') return editTx(d.id);
-  if (act === 'newprod') { const v = await ask({title: 'Novo produto', fields: newProdFields, values: {ativo: true, estoque_inicial: 10, estoque_minimo: 3}}); if (v) run(() => api('/api/admin/products', v), 'Produto criado'); }
-  if (act === 'editprod') { const p = S.prod.find(x => x.id === d.id), v = await ask({title: 'Editar produto', fields: prodFields, values: {...p, ativo: p.ativo}}); if (v) run(() => api('/api/admin/products', {...v, id: d.id}), 'Produto atualizado'); }
-  if (act === 'mov') {
-    const p = S.prod.find(x => x.id === d.id), nomeT = {entrada: 'Entrada', saida: 'Saída', ajuste: 'Ajuste'}[d.t];
-    const v = await ask({title: `${nomeT} · ${p.nome}`, fields: [
-      {k: 'quantidade', label: d.t === 'ajuste' ? 'Quantidade (pode ser negativa)' : 'Quantidade', type: 'number', step: '1', req: true, ...(d.t === 'ajuste' ? {} : {min: 1})},
-      {k: 'motivo', label: 'Motivo (opcional)', max: 80}]});
-    if (v) run(() => api('/api/admin/stock', {product: d.id, tipo: d.t, ...v}), 'Estoque atualizado');
-  }
-  if (act === 'sell') {
-    const p = S.prod.find(x => x.id === d.id), bs = await barbers();
-    const v = await ask({title: `Venda · ${p.nome} (${brl(p.preco)})`, ok: 'Vender', values: {quantidade: 1, method: 'pix'}, fields: [
-      {k: 'quantidade', label: 'Quantidade', type: 'number', step: '1', min: 1, req: true},
-      {k: 'method', label: 'Forma de pagamento', type: 'select', opts: Object.entries(FORMAS)},
-      {k: 'barbeiro', label: 'Vendido por (opcional)', type: 'select', opts: [['', '—']].concat(bs.filter(x => x.ativo).map(x => [x.nome, x.nome]))}]});
-    if (v) run(() => api('/api/admin/sales', {product: d.id, ...v}), 'Venda registrada');
-  }
-  if (act === 'newserv') { const v = await ask({title: 'Novo serviço', fields: servFields, values: {ativo: true, minutos: 30}}); if (v) run(() => api('/api/admin/services', v), 'Serviço criado'); }
-  if (act === 'editserv') { const s = S.serv.find(x => x.id === d.id), v = await ask({title: 'Editar serviço', fields: servFields, values: s}); if (v) run(() => api('/api/admin/services', {...v, id: d.id}), 'Serviço atualizado'); }
-  if (act === 'newbarb') { const v = await ask({title: 'Novo barbeiro', fields: barbFields, values: {ativo: true}}); if (v) run(() => api('/api/admin/barbers', v), 'Barbeiro criado'); }
-  if (act === 'editbarb') { const x = (await barbers()).find(y => y.id === d.id), v = await ask({title: 'Editar barbeiro', fields: barbFields, values: {...x, telefone: fmtTel(x.telefone)}}); if (v) run(() => api('/api/admin/barbers', {...v, id: d.id}), 'Barbeiro atualizado'); }
-  if (act === 'savehours') {
-    const days = Array.from({length: 7}, () => ({}));
-    view.querySelectorAll('.hrs input').forEach(i => days[+i.dataset.i][i.dataset.k] = i.value);
-    run(() => api('/api/admin/hours', {barber: S.hb || '*', days}), 'Horários salvos');
-  }
-  if (act === 'newoff') {
-    const bs = await barbers();
-    const v = await ask({title: 'Nova folga / bloqueio', fields: [
-      {k: 'barbeiro', label: 'Quem', type: 'select', opts: [['*', 'Todos (feriado, férias coletivas)']].concat(bs.filter(x => x.ativo).map(x => [x.id, x.nome]))},
-      {k: 'data', label: 'Data', type: 'date', req: true}, {k: 'inicio', label: 'Das (vazio = dia todo)', type: 'time'}, {k: 'fim', label: 'Até', type: 'time'},
-      {k: 'motivo', label: 'Motivo', max: 80}]});
-    if (v) run(() => api('/api/admin/timeoff', v), 'Folga cadastrada');
-  }
-  if (act === 'deloff' && confirm('Remover esta folga? O horário volta a ser oferecido no site.')) run(() => api('/api/admin/timeoff/delete', {row: +d.row, data: d.d}), 'Folga removida');
-});
-view.addEventListener('change', e => {
-  const t = e.target;
-  if (t.classList.contains('q-forma') && t.value) {
-    run(() => api('/api/admin/transactions/' + encodeURIComponent(t.dataset.id), {forma_pgto: t.value}), 'Forma de pagamento salva');
-    return;
-  }
-  if (t.id === 'qusers') return;
-  if (t.id === 'dayin' && t.value) { S.day = t.value; show('agenda'); }
-  if (t.id === 'monthin' && t.value) { S.month = t.value; show(S.tab); }
-  if (t.id === 'nofi') { S.noForma = t.checked; show('lanc'); }
-  if (t.id === 'hb') { S.hb = t.value; show('horarios'); }
-});
-view.addEventListener('input', e => { if (e.target.id === 'qusers') renderUsuarios(); if (e.target.id === 'qmsg') renderMsgClientes(); });
-view.addEventListener('keydown', e => {  // Enter na quantidade adiciona ao carrinho
-  if (e.key === 'Enter' && e.target.id === 'cq') { e.preventDefault(); document.querySelector('[data-act="cart-add"]').click(); }
-});
-view.addEventListener('submit', e => {
-  if (e.target.id === 'f-desp') {
-    e.preventDefault();
-    const desc = $('#dd').value.trim(), valor = parseFloat($('#dv').value), rep = Math.max(1, parseInt($('#dr').value, 10) || 1);
-    if (!desc) return toast('Informe a descrição da despesa.', true);
-    if (!(valor > 0)) return toast('Informe o valor da despesa.', true);
-    if (!$('#dt').value) return toast('Informe a data.', true);
-    run(() => api('/api/admin/transactions', {tipo: 'despesa', data: $('#dt').value, descricao: desc, valor, categoria: $('#dc').value, forma_pgto: $('#df').value, repetir: rep}),
-        rep > 1 ? `${rep} despesas registradas` : 'Despesa registrada');
-    return;
-  }
-  if (e.target.id !== 'siteform') return;
-  e.preventDefault();
-  run(() => api('/api/admin/config', Object.fromEntries(new FormData(e.target))), 'Dados do site salvos');
-});
-
-// ------------------------------------------------------------ início
-(async () => {
-  try {
-    S.links = await api('/api/admin/links');
-    [['l-fin', 'financeiro'], ['l-est', 'estoque'], ['l-age', 'agenda']].forEach(([id, k]) => { if (S.links[k]) { const a = $('#' + id); a.href = S.links[k]; a.hidden = false; } });
-  } catch (e) { /* atalhos são opcionais */ }
-  const t = location.hash.slice(1);
-  show(LOAD[t] ? t : 'agenda');
-})();
-</script>
-{% endraw %}
-</body>
-</html>
+  const [bs
