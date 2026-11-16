@@ -33,7 +33,7 @@ SCHEMA = {
                     "barbeiro", "origem", "criado_em"],
     "Resumo": [],
     # estoque
-    "Produtos": ["id", "nome", "preco", "estoque_minimo", "ativo", "estoque"],
+    "Produtos": ["id", "nome", "preco", "estoque_minimo", "ativo", "setor", "estoque"],
     "Movimentacoes": ["data", "produto_id", "tipo", "quantidade", "motivo", "criado_em"],
 }
 TAB_BOOK = {
@@ -98,7 +98,7 @@ def seed(tab):
         ],
         "Horarios": [["*", d, "09:00", "19:00", "", ""] for d in ("seg", "ter", "qua", "qui", "sex", "sab")],
         "Folgas": [["*", "2026-12-25", "", "", "Natal"]],
-        "Produtos": [["p1", "Pomada modeladora", 35, 3, "sim", _estoque_formula(2)]],
+        "Produtos": [["p1", "Pomada modeladora", 35, 3, "sim", "barbearia", _estoque_formula(2)]],
         "Movimentacoes": [[date.today().isoformat(), "p1", "entrada", 10, "estoque inicial", ""]],
     }.get(tab, [])
     return [header] + body
@@ -147,9 +147,11 @@ class SheetsBackend:
                                         value_input_option="USER_ENTERED" if formulas else "RAW",
                                         table_range="A1")
 
-    def update_row(self, tab, rownum, row):
+    def update_row(self, tab, rownum, row, start_col=1):
         with self._lock:
-            self._sheet(tab).update(values=[[_cell(c) for c in row]], range_name=f"A{rownum}", raw=True)
+            from gspread.utils import rowcol_to_a1
+            self._sheet(tab).update(values=[[_cell(c) for c in row]],
+                                    range_name=rowcol_to_a1(rownum, start_col), raw=True)
 
     def setup(self, tabs):
         with self._lock:
@@ -205,8 +207,8 @@ class Sheets:
     def append(self, tab, row, formulas=False):
         self._b(tab).append(tab, row, formulas=formulas)
 
-    def update_row(self, tab, rownum, row):
-        self._b(tab).update_row(tab, rownum, row)
+    def update_row(self, tab, rownum, row, start_col=1):
+        self._b(tab).update_row(tab, rownum, row, start_col=start_col)
 
     def url(self, book):
         return f"https://docs.google.com/spreadsheets/d/{self.book_id(book)}/edit"
