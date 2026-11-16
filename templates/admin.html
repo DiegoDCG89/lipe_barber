@@ -523,28 +523,37 @@ async function loadDespesas() {
 }
 
 // ------------------------------------------------------------ ESTOQUE
+S.setor = 'barbearia';
 async function loadEstoque() {
   S.prod = await api('/api/admin/products');
-  const baixo = S.prod.filter(p => p.ativo && p.baixo).length;
-  view.innerHTML = `<div class="bar"><button class="btn" data-act="newprod">+ Novo produto</button></div>
+  renderEstoque();
+}
+function renderEstoque() {
+  const lista = S.prod.filter(p => p.setor === S.setor);
+  const baixo = lista.filter(p => p.ativo && p.baixo).length;
+  const nBar = S.prod.filter(p => p.setor === 'barbearia').length, nAde = S.prod.filter(p => p.setor === 'adega').length;
+  view.innerHTML = `<div class="bar"><button class="btn ${S.setor === 'barbearia' ? '' : 'ghost'}" data-act="setor" data-s="barbearia">Barbearia (${nBar})</button>
+    <button class="btn ${S.setor === 'adega' ? '' : 'ghost'}" data-act="setor" data-s="adega">Adega (${nAde})</button>
+    <button class="btn" data-act="newprod" style="margin-left:auto">+ Novo produto</button></div>
+    <p class="muted" style="font-size:13px;margin:0 0 10px">${S.setor === 'adega' ? 'Produtos da adega <b>não aparecem no site</b>: são vendidos só aqui no painel.' : 'Produtos da barbearia aparecem no site (se estiverem ativos).'}</p>
     ${baixo ? `<div class="alert"><b>${baixo}</b> produto(s) com estoque no mínimo ou abaixo.</div>` : ''}
     <div class="tbl"><table><thead><tr><th>Produto</th><th class="n">Preço</th><th class="n">Estoque</th><th></th></tr></thead><tbody>
-    ${S.prod.map(p => `<tr style="${p.ativo ? '' : 'opacity:.5'}"><td>${esc(p.nome)}${p.ativo ? '' : ' <span class="pill">inativo</span>'}<div class="muted" style="font-size:12px">mínimo ${p.estoque_minimo}</div></td>
+    ${lista.map(p => `<tr style="${p.ativo ? '' : 'opacity:.5'}"><td>${esc(p.nome)}${p.ativo ? '' : ' <span class="pill">inativo</span>'}<div class="muted" style="font-size:12px">mínimo ${p.estoque_minimo}</div></td>
       <td class="n">${brl(p.preco)}</td><td class="n"><span class="pill ${p.baixo ? 'bad' : 'ok'}">${p.estoque}</span></td>
       <td class="n"><div class="row end">
         <button class="btn sm" data-act="sell" data-id="${esc(p.id)}">Venda</button>
         <button class="btn sm ghost" data-act="mov" data-t="entrada" data-id="${esc(p.id)}">Entrada</button>
         <button class="btn sm ghost" data-act="mov" data-t="saida" data-id="${esc(p.id)}">Saída</button>
         <button class="btn sm ghost" data-act="mov" data-t="ajuste" data-id="${esc(p.id)}">Ajuste</button>
-        <button class="btn sm ghost" data-act="editprod" data-id="${esc(p.id)}">Editar</button></div></td></tr>`).join('') || '<tr><td colspan="4" class="muted">Nenhum produto cadastrado.</td></tr>'}
+        <button class="btn sm ghost" data-act="editprod" data-id="${esc(p.id)}">Editar</button></div></td></tr>`).join('') || '<tr><td colspan="4" class="muted">Nenhum produto cadastrado neste setor.</td></tr>'}
     </tbody></table></div>
     <p class="muted" style="font-size:13px">O estoque nunca é digitado direto: ele é calculado pelas movimentações (entradas − saídas ± ajustes). Venda baixa o estoque e lança a receita.</p>`;
 }
-const prodFields = [{k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'preco', label: 'Preço (R$)', type: 'number', req: true, min: 0},
-  {k: 'estoque_minimo', label: 'Estoque mínimo (alerta)', type: 'number', step: '1', min: 0}, {k: 'ativo', label: 'Ativo no site', type: 'check'}];
-const newProdFields = [{k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'preco', label: 'Preço (R$)', type: 'number', req: true, min: 0},
+const prodFields = [{k: 'setor', label: 'Setor', type: 'select', req: true, opts: [['barbearia', 'Barbearia (aparece no site)'], ['adega', 'Adega (só vendida no painel)']]}, {k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'preco', label: 'Preço (R$)', type: 'number', req: true, min: 0},
+  {k: 'estoque_minimo', label: 'Estoque mínimo (alerta)', type: 'number', step: '1', min: 0}, {k: 'ativo', label: 'Ativo', type: 'check'}];
+const newProdFields = [{k: 'setor', label: 'Setor', type: 'select', req: true, opts: [['barbearia', 'Barbearia (aparece no site)'], ['adega', 'Adega (só vendida no painel)']]}, {k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'preco', label: 'Preço (R$)', type: 'number', req: true, min: 0},
   {k: 'estoque_inicial', label: 'Estoque inicial (unidades atuais)', type: 'number', step: '1', min: 0},
-  {k: 'estoque_minimo', label: 'Estoque mínimo (alerta)', type: 'number', step: '1', min: 0}, {k: 'ativo', label: 'Ativo no site', type: 'check'}];
+  {k: 'estoque_minimo', label: 'Estoque mínimo (alerta)', type: 'number', step: '1', min: 0}, {k: 'ativo', label: 'Ativo', type: 'check'}];
 
 // ------------------------------------------------------------ CADASTROS
 async function loadCad() {
@@ -567,14 +576,14 @@ async function loadCad() {
 }
 const servFields = [{k: 'nome', label: 'Nome', req: true, max: 60}, {k: 'descricao', label: 'Descrição', max: 160},
   {k: 'minutos', label: 'Duração (minutos)', type: 'number', step: '5', min: 5, req: true}, {k: 'preco', label: 'Preço (R$)', type: 'number', min: 0, req: true},
-  {k: 'ativo', label: 'Ativo no site', type: 'check'}];
+  {k: 'ativo', label: 'Ativo', type: 'check'}];
 const barbFields = [
   {k: 'nome', label: 'Nome', req: true, max: 60},
   {k: 'funcao', label: 'Função / Especialidade (ex.: Mestre Barbeiro)', max: 60},
   {k: 'foto', label: 'Foto do barbeiro', type: 'photo'},
   {k: 'descricao', label: 'Descrição / Bio curta (aparece no card do site)', type: 'textarea', max: 240, rows: 3, ph: 'Especialista em cortes clássicos, degradê e barba na toalha quente.'},
   {k: 'telefone', label: 'WhatsApp do barbeiro, com DDD (aparece no site para o cliente chamar)', type: 'tel', max: 20},
-  {k: 'ativo', label: 'Ativo no site', type: 'check'}
+  {k: 'ativo', label: 'Ativo', type: 'check'}
 ];
 
 // ------------------------------------------------------------ HORÁRIOS E FOLGAS
@@ -615,7 +624,7 @@ async function loadSite() {
 S.cart = [];
 async function loadCaixa() {
   const [prods, bs, tx] = await Promise.all([api('/api/admin/products'), barbers(), api('/api/admin/transactions?month=' + hoje().slice(0, 7))]);
-  S.prod = prods; S.bs = bs; S.vendasHoje = tx.filter(t => t.categoria === 'produto' && t.data === hoje());
+  S.prod = prods; S.bs = bs; S.vendasHoje = tx.filter(t => (t.categoria === 'produto' || t.categoria === 'adega') && t.data === hoje());
   renderCaixa();
 }
 function renderCaixa() {
@@ -625,7 +634,7 @@ function renderCaixa() {
   view.innerHTML = `<h2>Venda de produtos</h2>
     <div class="card">
       <span class="cap">Adicionar à venda</span>
-      <div class="row"><select id="cp" aria-label="Produto" style="flex:1;min-width:200px">${options([['', disp.length ? 'Escolher produto…' : 'Nenhum produto com estoque disponível']].concat(disp.map(p => [p.id, `${p.nome} · ${brl(p.preco)} (${p.estoque} un.)`])), '')}${S.prod.filter(p => p.ativo && p.estoque <= 0).map(p => `<option value="" disabled>${esc(p.nome)} · sem estoque (registre Entrada na aba Estoque)</option>`).join('')}</select>
+      <div class="row"><select id="cp" aria-label="Produto" style="flex:1;min-width:200px">${options([['', disp.length ? 'Escolher produto…' : 'Nenhum produto com estoque disponível']].concat(disp.map(p => [p.id, `${p.setor === 'adega' ? '[Adega] ' : ''}${p.nome} · ${brl(p.preco)} (${p.estoque} un.)`])), '')}${S.prod.filter(p => p.ativo && p.estoque <= 0).map(p => `<option value="" disabled>${esc(p.nome)} · sem estoque (registre Entrada na aba Estoque)</option>`).join('')}</select>
         <input id="cq" type="number" min="1" step="1" value="1" inputmode="numeric" aria-label="Quantidade" style="width:76px">
         <button class="btn" data-act="cart-add">Adicionar</button></div>
       ${S.cart.length ? `<div class="tbl" style="margin-top:14px"><table style="min-width:0"><tbody>${S.cart.map(i => `<tr><td>${esc(cat[i.id].nome)}</td><td class="n">× ${i.q}</td><td class="n">${brl(cat[i.id].preco * i.q)}</td>
@@ -636,7 +645,7 @@ function renderCaixa() {
         <button class="btn" data-act="cart-fin" style="width:100%;padding:15px">Finalizar venda · ${brl(total)}</button>`
         : '<p class="muted" style="margin:14px 0 0">Adicione os produtos da venda. Para vender junto com um corte, use “Concluir” na Agenda.</p>'}
     </div>
-    <h2>Vendas de produtos hoje</h2>
+    <h2>Vendas de produtos e adega hoje</h2>
     <div class="tbl"><table><thead><tr><th>Produto</th><th>Forma</th><th class="n">Valor</th></tr></thead><tbody>
       ${S.vendasHoje.map(t => `<tr><td>${esc(t.descricao)}${t.barbeiro ? `<div class="muted" style="font-size:12px">${esc(t.barbeiro)}</div>` : ''}</td><td>${esc(FORMAS[t.forma_pgto] || '—')}</td><td class="n pos">${brl(t.valor)}</td></tr>`).join('') || '<tr><td colspan="3" class="muted">Nenhuma venda de produto hoje.</td></tr>'}
     </tbody></table></div>`;
@@ -680,7 +689,7 @@ view.addEventListener('click', async e => {
       {k: 'discount', label: `Desconto (R$) — serviço: ${brl(d.preco)}`, type: 'number', min: 0},
       {k: 'tip', label: 'Gorjeta (R$), entra à parte', type: 'number', min: 0},
       ...(prods.length ? [{k: 'products', label: 'Produtos vendidos junto (opcional)', type: 'items',
-        opts: prods.map(p => [p.id, `${p.nome} · ${brl(p.preco)} (${p.estoque} un.)`]), catalog: Object.fromEntries(prods.map(p => [p.id, p]))}] : [])]});
+        opts: prods.map(p => [p.id, `${p.setor === 'adega' ? '[Adega] ' : ''}${p.nome} · ${brl(p.preco)} (${p.estoque} un.)`]), catalog: Object.fromEntries(prods.map(p => [p.id, p]))}] : [])]});
     if (v) run(() => api(`/api/admin/appointments/${encodeURIComponent(d.code)}/status`, {status: 'concluido', ...v}), 'Atendimento concluído');
   }
   if (act === 'miss' && confirm('Marcar que o cliente faltou? O horário volta a ficar livre.')) run(() => api(`/api/admin/appointments/${encodeURIComponent(d.code)}/status`, {status: 'faltou'}), 'Marcado como faltou');
@@ -726,7 +735,8 @@ view.addEventListener('click', async e => {
     return run(() => api('/api/admin/transactions/' + encodeURIComponent(d.id) + '/delete', {}), 'Lançamento excluído');
   if (act === 'newtx') return newTx();
   if (act === 'edittx') return editTx(d.id);
-  if (act === 'newprod') { const v = await ask({title: 'Novo produto', fields: newProdFields, values: {ativo: true, estoque_inicial: 10, estoque_minimo: 3}}); if (v) run(() => api('/api/admin/products', v), 'Produto criado'); }
+  if (act === 'setor') { S.setor = d.s; return renderEstoque(); }
+  if (act === 'newprod') { const v = await ask({title: 'Novo produto', fields: newProdFields, values: {setor: S.setor, ativo: true, estoque_inicial: 10, estoque_minimo: 3}}); if (v) run(() => api('/api/admin/products', v), 'Produto criado'); }
   if (act === 'editprod') { const p = S.prod.find(x => x.id === d.id), v = await ask({title: 'Editar produto', fields: prodFields, values: {...p, ativo: p.ativo}}); if (v) run(() => api('/api/admin/products', {...v, id: d.id}), 'Produto atualizado'); }
   if (act === 'mov') {
     const p = S.prod.find(x => x.id === d.id), nomeT = {entrada: 'Entrada', saida: 'Saída', ajuste: 'Ajuste'}[d.t];
