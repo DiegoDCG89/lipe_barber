@@ -496,7 +496,8 @@ def api_public():
             "descricao": r.get("descricao", ""),
         } for r in table("Barbeiros") if is_active(r) and r.get("id") and r.get("nome")],
         products=[{"name": r["nome"], "price": num(r.get("preco")), "stock": max(0, int(stock_levels().get(r.get("id", ""), 0)))}
-                  for r in table("Produtos") if is_active(r) and r.get("nome")])
+                  for r in table("Produtos")
+                  if is_active(r) and r.get("nome") and (r.get("setor") or "").strip().lower() != "adega"])  # adega: só no painel
     resp.headers["Cache-Control"] = "public, s-maxage=60, stale-while-revalidate=300"
     return resp
 
