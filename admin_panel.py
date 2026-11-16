@@ -144,9 +144,14 @@ def register(app, core):
             raise Erro("Registro não encontrado (a planilha mudou). Atualize a tela.", 404)
         row = coerce(tab, {**atual, **changes})
         vals = [row.get(h, "") for h in header]
-        if tab == "Produtos" and header and header[-1] == "estoque":
-            vals = vals[:-1]
-        core.get_backend().update_row(tab, rownum, vals)
+        if tab == "Produtos" and "estoque" in header:
+            # a coluna `estoque` tem fórmula: nunca é sobrescrita. Grava o que vem antes e o que vem depois dela.
+            i = header.index("estoque")
+            core.get_backend().update_row(tab, rownum, vals[:i])
+            if vals[i + 1:]:
+                core.get_backend().update_row(tab, rownum, vals[i + 1:], start_col=i + 2)
+        else:
+            core.get_backend().update_row(tab, rownum, vals)
         core.invalidate(tab)
 
     def garantir_coluna(tab, nome):
@@ -155,6 +160,10 @@ def register(app, core):
         if nome not in header:
             core.get_backend().update_row(tab, 1, list(header) + [nome])
             core.invalidate(tab)
+
+    def setor_de(r):
+        """Setor do produto: 'adega' (só vendido no painel) ou 'barbearia' (aparece no site). Vazio = barbearia."""
+        return "adega" if (r.get("setor") or "").strip().lower() == "adega" else "barbearia"
 
     def mais_meses(d, n):
         m = d.month - 1 + n
@@ -366,13 +375,13 @@ def register(app, core):
         return out
 
     def vender(itens, forma, barbeiro, data, origem, motivo):
-        """Dá baixa no estoque e lança uma receita (categoria produto) por item. Devolve o total vendido."""
+        """Dá baixa no estoque e lança uma receita (categoria produto, ou adega) por item. Devolve o total vendido."""
         agora, total = core.now().isoformat(timespec="seconds"), 0.0
         for p, q in itens:
             movimento(p["id"], "saida", q, motivo)
             valor = round(core.num(p.get("preco")) * q, 2)
             add("Lancamentos", {
-                "id": novo_id("v"), "data": data, "tipo": "receita", "categoria": "produto",
+                "id": novo_id("v"), "data": data, "tipo": "receita", "categoria": "adega" if setor_de(p) == "adega" else "produto",
                 "descricao": f"{p['nome']} x{q}", "valor": valor, "forma_pgto": forma,
                 "barbeiro": barbeiro, "origem": origem(p), "criado_em": agora})
             total += valor
@@ -503,11 +512,16 @@ def register(app, core):
                 q = niveis.get(r["id"], 0)
                 minimo = core.num(r.get("estoque_minimo"))
                 out.append({"id": r["id"], "nome": r.get("nome"), "preco": core.num(r.get("preco")),
+                            "setor": setor_de(r),
                             "estoque_minimo": minimo, "ativo": core.is_active(r),
                             "estoque": q, "baixo": q <= minimo})
             return jsonify(out)
         j = body()
-        dados = {"nome": seguro(txt(j.get("nome"), 60, "o nome", True)),
+        setor = txt(j.get("setor"), 10).lower() or "barbearia"
+        if setor not in ("barbearia", "adega"):
+            raise Erro("Setor inválido.")
+        garantir_coluna("Produtos", "setor")  # planilhas antigas ainda não têm a coluna
+        dados = {"setor": setor, "nome": seguro(txt(j.get("nome"), 60, "o nome", True)),
                  "preco": dinheiro(j.get("preco"), "preço"),
                  "estoque_minimo": dinheiro(j.get("estoque_minimo") or 0, "estoque mínimo", 0, 100000),
                  "ativo": sim_nao(j.get("ativo", True))}
